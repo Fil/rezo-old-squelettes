@@ -289,7 +289,7 @@
 		<BOUCLE_depeches(ARTICLES){lang=fr}{ps>=2}{id_rubrique!=79}{date<(#ENV{date}|limite_age{-1})}{date>=(#ENV{date}|limite_age{10})}{par date}{inverse}{0,60}>
 			<BOUCLE_rub_parent3(RUBRIQUES){id_rubrique}><?php [$source='(#DESCRIPTIF)';] $titre_rub='[(#TITRE|texte_script)]'; ?></BOUCLE_rub_parent3>
 	        <?php 
-			if ((!$deja['#ID_ARTICLE'])&&($cpt++<=12)) { 
+			if ((!$deja['#ID_ARTICLE'])&&($cpt++<=15)) { 
 			  $para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', $titre_rub);
 			   echo "<a href='sources/$source'><img src='img_rezo/plus2.gif' title='$titre_rub' border='0' align='right' style='margin-top: 4px; margin-left: 5px;'></a>";
 			$mots = '<BOUCLE_mots_depeches(MOTS){id_groupe!=2}{id_article}{", "}>[(#TITRE|texte_script)]</BOUCLE_mots_depeches>';

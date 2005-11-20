@@ -1,6 +1,6 @@
 <?php
 
-$fond = "sommaire800";
+## $fond est definie par le fichier appelant (sommaire800 ou sommaire1024)
 $delais = 7200;
 
 	ereg("^([A-Za-z]+)/([0-9]+\.[0-9]+) (.*)$", $HTTP_USER_AGENT, $match);
