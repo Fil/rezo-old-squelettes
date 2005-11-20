@@ -1,0 +1,34 @@
+<hr />
+<p align='justify'>
+<?php
+
+<BOUCLE_mot(MOTS){par hasard}>
+$titre[#ID_MOT]='[(#TITRE|texte_script)]';
+$url[#ID_MOT]='#URL_MOT';
+<BOUCLE_art(ARTICLES){id_mot}{par popularite}{inverse}{0,300}>
+$pop[#ID_MOT]+=#POPULARITE_ABSOLUE;
+</BOUCLE_art>
+</BOUCLE_mot>
+
+$maxpop = max($pop);
+
+foreach ($titre as $id => $t) {
+	$score = $pop[$id]/$maxpop; # entre 0 et 1
+	$score = pow($score,1.5); # lissage
+	$s = 8+ceil(40*$score);
+
+	$t = str_replace(' ', '&nbsp;', $t);
+	$t = "<a href='".$url[$id]."'>$t</a>";
+	$l = "<span style='font-size: ${s}px;'>$t</style>\n";
+
+	if ($s>9)
+		echo $l;
+	else
+		$fin .= "$t &nbsp; \n";
+}
+
+echo "</p><hr />";
+
+#echo "<p align='center' style='font-size: 10px;'>$fin</p><hr />";
+
+?>
