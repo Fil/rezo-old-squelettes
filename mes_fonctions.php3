@@ -270,4 +270,20 @@ function my_intro ($texte, $chapo) {
 	return PtoBR(propre(supprimer_tags(couper_intro($chapo."\n\n\n".$texte, 500))));
 }
 
+## retourne la date de comparaison au format MySQL
+## a utiliser comme critere {date>(#REM|limite_age{850})}
+function limite_age($maintenant, $jours) {
+	if ($maintenant)
+		$time = strtotime($maintenant);
+	else
+		$time = time();
+	return date('Y-m-d', $time-$jours*24*3600);
+}
+
+## cd filtre prend une date MySQL et regarde si elle est plus vieille que n
+## jours ; a utiliser comme [(#DATE|test_age{850}|?{si VIEUX, si RECENT})]
+function test_age($date, $jours) {
+	return $date < limite_age('', $jours);
+}
+
 ?>
