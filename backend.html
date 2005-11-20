@@ -1,0 +1,91 @@
+<?php echo '<'.'?xml version="1.0" encoding="#CHARSET"?'.'>'; ?>
+
+<rss version="0.91" xmlns:dc="http://purl.org/dc/elements/1.1/">
+
+<?php // dabord les articles specifiques a une rubrique - syntaxe backend.php3?id_rubrique=123 ?>
+
+<BOUCLE_rub(RUBRIQUES){id_rubrique}>
+<channel>
+	<title>[(#TITRE|texte_backend)] (via Rezo.net)</title>
+	<link>#URL_SITE_SPIP/sources/#DESCRIPTIF</link>
+	<description>[(#TEXTE|texte_backend)]</description>
+	<language>#LANG-#LANG</language>
+
+	<BOUCLE1(ARTICLES){ps>0}{age<90}{branche}{par date}{inverse}{0,20}>
+		<item>
+			<title>[(#TITRE|retitre|texte_backend)]</title>
+			<link>#URL_SITE</link>
+			<date>#DATE</date>
+			<author>[(#TITRE|retitre{auteur}|texte_backend)]</author>
+			<description>
+			[(#INTRODUCTION|embellir_intro|texte_backend)]</description>
+		</item>
+	</BOUCLE1>
+</channel>
+</BOUCLE_rub>
+
+<?php # sinon les articles specifiques a un mot-cle - syntaxe backend.php3?id_mot=123 ?>
+
+<BOUCLE_mot(MOTS){id_mot}>
+<channel>
+	<title>[(#TITRE|texte_backend)]</title>
+	<link>#URL_SITE_SPIP#URL_MOT</link>
+	<description></description>
+	<language>#LANG-#LANG</language>
+
+		<BOUCLE2(ARTICLES){ps>1}{id_mot}{par date}{inverse}{0,30}>
+			<item>
+				<title>[(#TITRE|retitre|texte_backend)]</title>
+				<link>#URL_SITE</link>
+				<date>#DATE</date>
+				<BOUCLE21(RUBRIQUES){id_rubrique}><author>[(#TITRE|texte_backend)]</author></BOUCLE21>
+				[<description>(#INTRODUCTION|embellir_intro|texte_backend)</description>]
+			</item>
+	</BOUCLE2>
+</channel>
+</BOUCLE_mot>
+
+<?php # sinon tous les articles du site - syntaxe backend.php3 ?>
+<channel>
+	<title>[(#NOM_SITE_SPIP|texte_backend)]</title>
+	<link>#URL_SITE_SPIP/</link>
+	<description>#NOM_SITE_SPIP</description>
+	<language>#LANG-#LANG</language>
+
+        <BOUCLE5(MOTS){par id_mot}{id_groupe=5}{inverse}{0,0}>
+            <item>
+              <title>[(#TITRE|texte_backend)]</title>
+              <link>http://rezo.net#URL_MOT</link>
+              <date>#DATE</date>
+              <author>Rezo.net</author>
+            </item>
+        </BOUCLE5>
+
+	<BOUCLE3(ARTICLES){tout}{lang=fr}{ps>2}{par date}{inverse}{0,30}{unique}>
+	    <item>
+	      <title>[(#TITRE|retitre|texte_backend)]</title>
+	      <link>#URL_SITE</link>
+	      <date>#DATE</date>
+	   	<BOUCLE31(RUBRIQUES){id_rubrique}><author>[(#TITRE|texte_backend)]</author></BOUCLE31>
+		<description>
+		[&lt;div style='float: right; padding-left: 5px; padding-bottom: 5px;'&gt;(#LOGO_ARTICLE||reduire_image{120}|liens_absolus||corriger_img|texte_backend)&lt;/div&gt;]
+		[(#INTRODUCTION|embellir_intro|texte_backend)]</description>
+	    </item>
+	</BOUCLE3>
+
+	<BOUCLE4(ARTICLES){tout}{lang=fr}{ps>2}{par date}{inverse}{age<3}{unique}>
+	    <item>
+	      <title>[(#TITRE|retitre|texte_backend)]</title>
+	      <link>#URL_SITE</link>
+	      <date>#DATE</date>
+	      <BOUCLE41(RUBRIQUES){id_rubrique}><author>[(#TITRE|texte_backend)]</author></BOUCLE41>
+		[<description>(#INTRODUCTION|embellir_intro|texte_backend)</description>]
+	    </item>
+	</BOUCLE4>
+
+</channel>
+
+<//B_mot>
+<//B_rub>
+
+</rss>
