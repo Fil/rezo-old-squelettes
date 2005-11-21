@@ -97,7 +97,9 @@
 			$limit=100000;
 		}
 //		$query .= " AND not (url_site REGEXP \"\.(avi|jpg|pps|ram|rm|mp3)$\")";
-		$query .= " AND date>'2004-04-01' ORDER BY date DESC LIMIT 0,$limit";
+		# date limite = il y a 2 mois
+		$datelimite = date('Y-m-d', time()-60*24*3600);
+		$query .= " AND date>'$datelimite' ORDER BY date DESC LIMIT 0,$limit";
 		$res = spip_query($query);
 
 		unset ($raw);
