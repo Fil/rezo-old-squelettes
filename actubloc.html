@@ -1,40 +1,36 @@
+<BOUCLE_lemot(MOTS){id_mot}{id_groupe IN 1,3,5}>
 <?php
-	<BOUCLE_lemot(MOTS){id_mot}>
-			$mot[#ID_MOT]["logo"] = '[(#LOGO_MOT||reduire_image{230}|texte_script)]';
-			
-			unset($CONX);
-			$bloc_mot = "";
-			<BOUCLE_test_artheme(MOTS){id_mot}{id_groupe==^(1|3|5)$}>
-			<B_artthemes>
-			<BOUCLE_artthemes(ARTICLES){id_mot}{par date}{inverse}{0,30}>
-			  <BOUCLE_motthemes(MOTS){id_article}{id_groupe==^(1|3|5)$}>
-				$CONX['#ID_MOT']++; 
-				$TITRE['#ID_MOT']='[(#TITRE)]'; 
-				$URL['#ID_MOT']='#URL_MOT';
-			  </BOUCLE_motthemes>
-			</BOUCLE_artthemes>
-	
-				unset ($bloc_mot);
-				$compt = 0;
-				arsort($CONX); 
-				while (list($key,$lig)=each($CONX) AND $lig>=3 AND $compt < 10) {
-							$letheme["titre"]=$TITRE[$key];
-							$letheme["url"]=$URL[$key];
-							
-							if ($letheme["titre"] != "#TITRE") {
-								$compt++;
-								if ($compt !=1) $bloc_mot.=" | ";
-		
-								$bloc_mot .= " <a href='".$letheme["url"]."' style='color: white;'>". $letheme["titre"]."</a>";
-							}
-				}
-				if ($bloc_mot) {
-					$mot[#ID_MOT]["themes"] = "<b>Thèmes liés :</b> ".$bloc_mot;
-				}
-			</B_artthemes>
-			</BOUCLE_test_artheme>
-			
-	
-			
-	</BOUCLE_lemot>
+	$mot[#ID_MOT]["logo"] = '[(#LOGO_MOT||reduire_image{230}|texte_script)]';
+	unset($CONX);
+	$bloc_mot = "";
+
+	<B_artthemes>
+	<BOUCLE_artthemes(ARTICLES){id_mot}{par date}{inverse}{0,30}>
+		<BOUCLE_motthemes(MOTS){id_article}{id_groupe IN 1,3,5}>
+			$CONX['#ID_MOT']++; 
+			$TITRE['#ID_MOT']='[(#TITRE)]'; 
+			$URL['#ID_MOT']='#URL_MOT';
+		</BOUCLE_motthemes>
+	</BOUCLE_artthemes>
+
+	$compt = 0;
+	arsort($CONX);
+	while (list($key,$lig)=each($CONX) AND $lig>=3 AND $compt < 10) {
+		$letheme["titre"]=$TITRE[$key];
+		$letheme["url"]=$URL[$key];
+
+		if ($letheme["titre"] != "#TITRE") {
+			$compt++;
+			if ($compt !=1) $bloc_mot.=" | ";
+
+			$bloc_mot .= " <a href='".$letheme["url"]."' style='color: white;'>". $letheme["titre"]."</a>";
+		}
+	}
+
+	if ($bloc_mot) {
+		$mot[#ID_MOT]["themes"] = "<b>Thèmes liés :</b> ".$bloc_mot;
+	}
+	</B_artthemes>
+
 ?>
+</BOUCLE_lemot>
