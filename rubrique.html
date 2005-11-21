@@ -19,12 +19,20 @@
 <center><table width="750" cellpadding="5" cellspacing="0" border="0">
 <tr>
 <td style="text-align:left;" class="maj">
-       <BOUCLE_maj(ARTICLES){id_rubrique}{par date}{inverse}{0,1}>
-         <?php
-            echo "derni&egrave;re mise &agrave; jour :<br> <b>".majdate("[(#DATE)]")."</b>";
-         ?>
-       </BOUCLE_maj>
+<BOUCLE_maj(ARTICLES){id_rubrique}{par date}{inverse}{0,1}>
+       dernière mise à jour :<br /><b>[(#DATE|majdate)]</b>
+</BOUCLE_maj>
 </td>
+
+[(#REM) memoriser les rubriques ]
+<?php
+	$rubriques = array();
+	<BOUCLE_rub_parent2(RUBRIQUES){id_rubrique}>
+		$rubriques['#ID_RUBRIQUE']['source']='[(#DESCRIPTIF|texte_script)]';
+		$rubriques['#ID_RUBRIQUE']['titre']='[(#TITRE|texte_script)]';
+	</BOUCLE_rub_parent2>
+?>
+
 <td style="text-align:right;">
         <a href="/pourquoi" class="abandeau">Pourquoi ce portail&nbsp;?</a>
         <a href="/demarrage" class="abandeau">Votre page de d&eacute;marrage</a>
@@ -121,45 +129,41 @@
 <td width="425" valign="top" rowspan="2">
 	<div style="width: 425px;">
 
-		<BOUCLE_suiteune(ARTICLES){ps>=3}{doublons}{id_rubrique}{lang_select=non}{par date}{inverse}{0,180}>
-                <BOUCLE_rub_parent2(RUBRIQUES){id_rubrique}><?php $i++; [$source='(#DESCRIPTIF)';] [$titre_rub='(#TITRE)';] ?></BOUCLE_rub_parent2>
-                <?php
-                   $art[$i]=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'rubrique', '[(#DATE)]', $titre_rub);
-				   $art[$i]["jour"]="[(#DATE|nom_mois)] [(#DATE|annee)]";
-				//if(date("Y")<>[(#DATE|annee)]) $art[$i]["jour"].=" [(#DATE|annee)]";
-				   $art[$i]["date"]=substr("[(#DATE)]",0,10);
-				   $art[$i]["pop"]=intval( #POPULARITE_ABSOLUE );
-				   $art[$i]["url"]=href_rezo('[(#URL_SITE|texte_script)]', #ID_ARTICLE);
-				   $art[$i]["source"] = "$source";
-				   $art[$i]["titre_rub"] = addslashes($titre_rub);
-                ?>
-		</BOUCLE_suiteune>
-		
-			<BOUCLE_suiteunedep(ARTICLES){ps=2}{doublons}{id_rubrique}{lang_select=non}{par date}{inverse}{0,180}>
-                <BOUCLE_rub_parentdep(RUBRIQUES){id_rubrique}><?php $i++; [$source='(#DESCRIPTIF)';] [$titre_rub='(#TITRE)';] ?></BOUCLE_rub_parentdep>
-                <?php
-                   $art[$i]=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'rubrique', '[(#DATE)]', $titre_rub);
-				   $art[$i]["jour"]="[(#DATE|nom_mois)] [(#DATE|annee)]";
-				//if(date("Y")<>[(#DATE|annee)]) $art[$i]["jour"].=" [(#DATE|annee)]";
-				   $art[$i]["date"]=substr("[(#DATE)]",0,10);
-				   $art[$i]["pop"]=intval( #POPULARITE_ABSOLUE );
-				   $art[$i]["url"]=href_rezo('[(#URL_SITE|texte_script)]', #ID_ARTICLE);
-				   $art[$i]["source"] = "$source";
-				   $art[$i]["titre_rub"] = addslashes($titre_rub);
-                ?>
-			</BOUCLE_suiteunedep>
-			<? $aff_dep = true; ?>
-			</B_suiteunedep>
-		
-		<//B_suiteune>
-		<?php
-   		  function compare ($a, $b) {
-                    if ($a["date"] == $b["date"]) return 0;
-                    return ($a["date"] > $b["date"]) ? -1 : 1;
-                  }	
-		  if (is_array($art)) {
-		  usort($art, compare); 
-	
+<?php
+	<BOUCLE_suiteune(ARTICLES) {ps>=3} {doublons} {id_rubrique} {lang_select=non} {par date} {inverse} {0,180}>
+		$i++;
+		$art[$i]=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'rubrique', '[(#DATE)]', $rubriques['#ID_RUBRIQUE']['titre']);
+		$art[$i]["jour"]="[(#DATE|nom_mois)] [(#DATE|annee)]";
+		$art[$i]["date"]=substr("[(#DATE)]",0,10);
+		$art[$i]["pop"]=intval( #POPULARITE_ABSOLUE );
+		$art[$i]["url"]=href_rezo('[(#URL_SITE|texte_script)]', #ID_ARTICLE);
+		$art[$i]["source"] = $rubriques['#ID_RUBRIQUE']['source'];
+		$art[$i]["titre_rub"] = $rubriques['#ID_RUBRIQUE']['titre'];
+	</BOUCLE_suiteune>
+?>
+
+<?php
+	<BOUCLE_suiteunedep(ARTICLES) {ps=2} {doublons} {id_rubrique} {lang_select=non} {par date} {inverse} {0,180}>
+		$i ++;
+		$art[$i]=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'rubrique', '[(#DATE)]', $rubriques['#ID_RUBRIQUE']['titre']);
+		$art[$i]["jour"]="[(#DATE|nom_mois)] [(#DATE|annee)]";
+		$art[$i]["date"]="[(#DATE|substr{0,10})]";
+		$art[$i]["pop"]=intval( #POPULARITE_ABSOLUE );
+		$art[$i]["url"]=href_rezo('[(#URL_SITE|texte_script)]', #ID_ARTICLE);
+		$art[$i]["source"] = "$source";
+		$art[$i]["titre_rub"] = $rubriques['#ID_RUBRIQUE']['titre'];
+	</BOUCLE_suiteunedep>
+	$aff_dep = true;
+	</B_suiteunedep>
+?>
+
+<?php
+	function compare ($a, $b) {
+		if ($a["date"] == $b["date"]) return 0;
+		return ($a["date"] > $b["date"]) ? -1 : 1;
+	}
+	if (is_array($art)) {
+		usort($art, compare); 
 		  while (list($key,$lig) = each($art))
 		    {
 			$cgj=0;
