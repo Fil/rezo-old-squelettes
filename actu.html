@@ -98,18 +98,16 @@
 
 <INCLURE(moteur2.php)>
 
-	<BOUCLE_nb_sources(RUBRIQUES)></BOUCLE_nb_sources>
-	<?php $total_sources = "#TOTAL_BOUCLE";
-	?>
-	<//B_nb_sources>
-			<form style="padding: 0px; margin: 0px; margin-top: 5px;" method="get" action="http://rezo.net/">
-			<select name="sources" style="width: 200px;" class="sources" onChange="if (options[selectedIndex].value) { location = 'http://rezo.net/sources/'+options[selectedIndex].value; }">
-			<option style="color: black; font-weight: bold">Nos <BOUCLE_nb_sources(RUBRIQUES)></BOUCLE_nb_sources>#TOTAL_BOUCLE<//B_nb_sources> sources</option>
-			<BOUCLE_sources(RUBRIQUES){id_parent=0}{par titre}>
-				<option value="#DESCRIPTIF">#TITRE</option>
-			</BOUCLE_sources>
-			</select>
-			</form>
+<B_sources>
+		<form style="padding: 0px; margin: 0px; margin-top: 5px;" method="get" action="http://rezo.net/">
+		<select name="sources" style="width: 200px;" class="sources" onChange="if (options[selectedIndex].value) { location = 'http://rezo.net/sources/'+options[selectedIndex].value; }">
+		<option style="color: black; font-weight: bold">Nos #TOTAL_BOUCLE sources</option>
+	<BOUCLE_sources(RUBRIQUES){id_parent=0}{par titre}>
+		<option value="#DESCRIPTIF">#TITRE</option>
+	</BOUCLE_sources>
+		</select>
+		</form>
+</B_sources>
 
 </td>
 </tr>
@@ -173,7 +171,7 @@
 			</BOUCLE_article_une>
 	
 			$retour = "";
-			<BOUCLE_suiteune(ARTICLES){ps>=3}{id_mot}{doublons}{lang=fr}{id_rubrique!=79}{date<(#DATE|date_limite{-1})} {date>=(#DATE|date_limite{6})} {par popularite} {inverse} {0,3}>
+			<BOUCLE_suiteune(ARTICLES){ps>=3}{id_mot}{doublons}{lang=fr}{id_rubrique!=79}{date<(#DATE|limite_age{-1})} {date>=(#DATE|limite_age{6})} {par popularite} {inverse} {0,3}>
 				<BOUCLE_rub_parent2(RUBRIQUES){id_rubrique}>
 					$id_rub='[(#DESCRIPTIF*|texte_script)]'; $titre_rub='[(#TITRE|texte_script)]'; $code_rub='[(#DESCRIPTIF|texte_script)]'; 
 				</BOUCLE_rub_parent2>
