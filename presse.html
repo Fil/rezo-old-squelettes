@@ -67,7 +67,7 @@
 <table width="750" cellpadding="0" cellspacing="0" border="0">
 <tr>
 
-	<BOUCLE_une(ARTICLES){ps>=3}{ps<5}{doublons}{id_secteur=118}{age_relatif>=0}{age_relatif<=3}{par popularite}{"<td>&nbsp;</td>"}{inverse}{0,1}>
+	<BOUCLE_une(ARTICLES){ps>=3}{ps<5}{doublons}{id_secteur=118}{date<(#ENV{date}|limite_age{-1})}{date>=(#ENV{date}|limite_age{3})}{par popularite}{"<td>&nbsp;</td>"}{inverse}{0,1}>
 	<BOUCLE_rub_parent(RUBRIQUES){id_rubrique}><?php [$source='(#DESCRIPTIF)';] $titre_rub='[(#TITRE|texte_script)]'; ?></BOUCLE_rub_parent>
 	<?php
 		$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'article', '[(#DATE)]', $titre_rub);
@@ -180,7 +180,7 @@
 	else
 		$type_retitrage = 'article';
 
-	<BOUCLE_suiteune(ARTICLES){ps>=3}{doublons}{lang=fr}{id_secteur=118}{age_relatif>=0}{age_relatif<15}{par date}{inverse}{0,50}>
+	<BOUCLE_suiteune(ARTICLES){ps>=3}{doublons}{lang=fr}{id_secteur=118}{date<(#ENV{date}|limite_age{-1})}{date>=(#ENV{date}|limite_age{15})}{par date}{inverse}{0,50}>
 		<BOUCLE_rub_parent2(RUBRIQUES){id_rubrique}>
 			$id_rub='[(#DESCRIPTIF*|texte_script)]'; $titre_rub='[(#TITRE|texte_script)]'; $code_rub='[(#DESCRIPTIF|texte_script)]'; 
 		</BOUCLE_rub_parent2>
@@ -257,7 +257,7 @@
 
                <div class="pavedepeches">
 		<div class="datesep">Et aussi...</div>
-		<BOUCLE_aussi(ARTICLES){doublons}{ps>=2}{age_relatif>0}{lang=fr}{id_secteur=118}{par date}{inverse}{0,70}>
+			<BOUCLE_aussi(ARTICLES){doublons}{ps>=2}{date<(#ENV{date}|limite_age{-1})}{lang=fr}{id_secteur=118}{par date}{inverse}{0,70}>
 			<BOUCLE_rub_parent3(RUBRIQUES){id_rubrique}><?php [$source='(#DESCRIPTIF)';] $titre_rub='[(#TITRE|texte_script)]'; ?></BOUCLE_rub_parent3>
 	        <?php 
 			$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', $titre_rub);
