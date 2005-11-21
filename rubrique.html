@@ -122,7 +122,7 @@
 	<div style="width: 425px;">
 
 		<BOUCLE_suiteune(ARTICLES){ps>=3}{doublons}{id_rubrique}{lang_select=non}{par date}{inverse}{0,180}>
-                <BOUCLE_rub_parent2(RUBRIQUES){id_rubrique}><?php $i++; $id_rub='#ID_RUBRIQUE'; [$source='(#DESCRIPTIF)';] [$titre_rub='(#TITRE)';] ?></BOUCLE_rub_parent2>
+                <BOUCLE_rub_parent2(RUBRIQUES){id_rubrique}><?php $i++; [$source='(#DESCRIPTIF)';] [$titre_rub='(#TITRE)';] ?></BOUCLE_rub_parent2>
                 <?php
                    $art[$i]=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'rubrique', '[(#DATE)]', $titre_rub);
 				   $art[$i]["jour"]="[(#DATE|nom_mois)] [(#DATE|annee)]";
@@ -136,7 +136,7 @@
 		</BOUCLE_suiteune>
 		
 			<BOUCLE_suiteunedep(ARTICLES){ps=2}{doublons}{id_rubrique}{lang_select=non}{par date}{inverse}{0,180}>
-                <BOUCLE_rub_parentdep(RUBRIQUES){id_rubrique}><?php $i++; $id_rub='#ID_RUBRIQUE'; [$source='(#DESCRIPTIF)';] [$titre_rub='(#TITRE)';] ?></BOUCLE_rub_parentdep>
+                <BOUCLE_rub_parentdep(RUBRIQUES){id_rubrique}><?php $i++; [$source='(#DESCRIPTIF)';] [$titre_rub='(#TITRE)';] ?></BOUCLE_rub_parentdep>
                 <?php
                    $art[$i]=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'rubrique', '[(#DATE)]', $titre_rub);
 				   $art[$i]["jour"]="[(#DATE|nom_mois)] [(#DATE|annee)]";
@@ -191,9 +191,8 @@
 		<B_depeches>
 		<div class="datesep">Dépêches</div>
 		<BOUCLE_depeches(ARTICLES){doublons}{ps=2}{0,20}{id_rubrique}{par date}{inverse}>
-			<BOUCLE_rub_parent3(RUBRIQUES){id_rubrique}><?php [$source='(#DESCRIPTIF)';] $titre_rub='[(#TITRE|texte_script)]'; ?></BOUCLE_rub_parent3>
 	        <?php 
-				$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', '' /* $titre_rub */);
+				$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', '');
 			?>
 			
 			<a <?php echo href_rezo('[(#URL_SITE|texte_script)]',#ID_ARTICLE); ?> class="depeches"><?php echo $para["titre"]; ?><br /> <span class="auteur">(<?php if ($para["auteur"]) echo $para["auteur"]."&nbsp;"; echo $para["date"]; ?>)</span></a>
@@ -204,9 +203,8 @@
 		<B_aussi>
 		<div class="datesep">et aussi...</div>
 		<BOUCLE_aussi(ARTICLES){doublons}{ps>0}{0,200}{id_rubrique}{par date}{inverse}>
-			<BOUCLE_rub_parent4(RUBRIQUES){id_rubrique}><?php [$source='(#DESCRIPTIF)';] $titre_rub='[(#TITRE|texte_script)]'; ?></BOUCLE_rub_parent4>
 	        <?php 
-				$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', '' /* $titre_rub */);
+				$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', '');
 			?>
 			
 			<a <?php echo href_rezo('[(#URL_SITE|texte_script)]',#ID_ARTICLE); ?> class="depeches"><?php echo $para["titre"]; ?><br /> <span class="auteur">(<?php if ($para["auteur"]) echo $para["auteur"]."&nbsp;"; echo $para["date"]; ?>)</span></a>
