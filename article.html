@@ -1,0 +1,100 @@
+<?php include_local('mes_fonctions.php3'); ?>
+<BOUCLE_article_principal(ARTICLES){id_rubrique=1}{id_article}>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<title>[(#TITRE|textebrut)]</title>
+	<link rel="SHORTCUT ICON" href="/img/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link rel="stylesheet" href="/spip_style.css" type="text/css" />
+	<link rel="stylesheet" href="/typographie.css" type="text/css">
+<?php gerer_body('rezoblanc'); ?>
+<div class="bandeau">
+<center><table width="750" cellpadding="5" cellspacing="0" border="0">
+<tr>
+<td style="text-align:left;" class="maj">
+	 dernière mise à jour : <b><?php echo majdate(); ?></b>
+</td>
+<td style="text-align:right;">
+	<a href="/pourquoi" class="abandeau">Pourquoi ce portail&nbsp;?</a>
+	<a href="/demarrage" class="abandeau">Votre page de démarrage</a>
+	<a href="/liste" class="abandeau">La liste de diffusion</a>
+</td></tr></table></center>
+</div>
+<div class="bas">
+<center>
+<table width="750" cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td width="425">
+<a href="/"><img src="/img_rezo/logorezo-blanc.gif" alt="rezo.net" width="300" height="83" border="0"></a>
+<div>&nbsp;</div>
+</td>
+<td width="25">&nbsp;</td>
+<td width="300" align="right">
+<!-- <INCLURE(table.php3)> -->
+</td>
+</tr>
+</table>
+
+<table width="750" cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td width="200" valign="top">
+<div class="chapo">
+[<br />(#LOGO_ARTICLE||reduire_image{150})<br /><br />]
+#CHAPO</div>
+</td>
+<td width="25" valign="top">
+</td>
+<td width="525" valign="top">
+<div>&nbsp;</div>
+[<div class="surtitre">(#SURTITRE)</div>]
+<h1 class="titre-texte" style="font-size: 20px; color: #446E67;">#TITRE</h1>
+[<div class="surtitre">(#SOUSTITRE)</div>]
+[<div class="texte" style="line-height: 150%;">(#TEXTE)</div>]
+
+
+<BOUCLE_livredor(ARTICLES){id_article}{id_article=53405}>
+<INCLURE(forumplat.php3){id_article}>
+</BOUCLE_livredor>
+
+<BOUCLE_tags(ARTICLES){id_article}{id_article=61805}>
+<INCLURE(tags.php3)>
+</BOUCLE_tags>
+
+<BOUCLE_listebackends(ARTICLES){id_article=5}{id_article}>
+	<hr />
+<a href="/backend/portail"><img src='/IMG/xml.gif' width='36' height='14' /></a> &nbsp; <a href="http://rezo.net/">Rezo.net, le portail des copains</a><br />
+<a href="/backend/bestof"><img src='/IMG/xml.gif' width='36' height='14' /></a> &nbsp; <a href="http://rezo.net/">La sélection du portail</a><br />
+	
+	<hr />
+	<BOUCLE_backends(RUBRIQUES){age<90}{texte!=}{par descriptif}{doublons}>
+<a href="[(#ID_RUBRIQUE|url_backend)]"><img src='/IMG/xml.gif' width='36' height='14' /></a> &nbsp; <a href="#URL_RUBRIQUE">#TITRE</a><br />
+	</BOUCLE_backends>
+
+        <hr />
+        <BOUCLE_backends2(MOTS){id_groupe<=5}{par titre}{doublons}>
+<a href="/backend/[(#DESCRIPTIF*)]"><img src='/IMG/xml.gif' width='36' height='14' /></a> &nbsp; <a href="#URL_MOT">#TITRE</a><br />
+        </BOUCLE_backends2>
+
+</BOUCLE_listebackends>
+
+[<div class="notes">(#NOTES)</div>]
+</td>
+<td width="30" valign="top">
+</td>
+</tr>
+</table>
+</center>
+</div>
+<img name='img_invisible' src='/bug.php3' width='1' height='1' alt=' ' />
+<?php $page="article#ID_ARTICLE"; if ("#ID_ARTICLE"=="61805") $page="tags"; echo "<IMG SRC=\"http://rezo.net/count.php?page=".$page."&n=".date("dmHi")."\" WIDTH=1 HEIGHT=1 BORDER=0 ALT=' '>\n"; ?>
+
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+
+</body>
+</html>
+</BOUCLE_article_principal>
+<:aucun_article:>
+<//B_article_principal>
