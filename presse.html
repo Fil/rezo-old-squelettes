@@ -1,0 +1,302 @@
+<?php
+	include_local('mes_fonctions.php3');
+  if ($var_parsource == "oui") {
+  	SetCookie("var_source", "oui", mktime(0, 0, 0, 12, 31, 2009));
+	$var_source = "oui";
+  } 
+  if ($var_pardate == "oui") {
+  	SetCookie("var_source", "non", mktime(0, 0, 0, 12, 31, 2009));
+  	$var_source = "non";
+  }
+  if ($var_source == "oui") $var_source = true;
+  else $var_source = false;
+	gerer_cookie_rezo();
+?><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+         <?php
+          if ($date) { $letitre="Revue de presse du [(#DATE|nom_jour)] [(#DATE|jour)] [(#DATE|nom_mois)] [(#DATE|annee)]"
+; }
+          else { $letitre="Rezo.net - Dans la presse..."; }
+         ?>
+
+	<title><?php echo $letitre; ?></title>
+	<link rel="SHORTCUT ICON" href="/img/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <meta name="ROBOTS" content="INDEX,FOLLOW,NOARCHIVE">
+	<link rel="stylesheet" href="spip_style.css" type="text/css" />
+<?php gerer_body('rezofonce'); ?>
+
+<div class="bandeau">
+<center><table width="750" cellpadding="5" cellspacing="0" border="0">
+<tr>
+<td style="text-align:left;" class="maj">
+	 <?php 
+            if ($date) { echo "la s&eacute;lection du [(#DATE|nom_jour)] [(#DATE|jour)] [(#DATE|nom_mois)] [(#DATE|annee)]"; } 
+            else { echo "derni&egrave;re mise &agrave; jour :<br> <b>".majdate()."</b>"; } 
+         ?>
+</td>
+<td style="text-align:right;">
+        <a href="/pourquoi" class="abandeau">Pourquoi ce portail&nbsp;?</a>
+        <a href="/demarrage" class="abandeau">Votre page de d&eacute;marrage</a>
+        <a href="/liste" class="abandeau">La liste de diffusion</a>
+</td>
+</tr></table></center>
+</div>
+
+<div class="bas">
+<center>
+
+<table width="750" cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td width="425" valign="top">
+	<a href="/"><img src="img_rezo/logorezo300.gif" alt="rezo.net" width="300" height="83" border="0"></a>
+</td>
+<td width="25">
+</td>
+<td width="300">
+</td>
+</tr>
+<tr>
+ <td>&nbsp;
+ </td>
+</tr>
+</table>
+
+
+<table width="750" cellpadding="0" cellspacing="0" border="0">
+<tr>
+
+	<BOUCLE_une(ARTICLES){ps>=3}{ps<5}{doublons}{id_secteur=118}{age_relatif>=0}{age_relatif<=3}{par popularite}{"<td>&nbsp;</td>"}{inverse}{0,1}>
+	<BOUCLE_rub_parent(RUBRIQUES){id_rubrique}><?php [$source='(#DESCRIPTIF)';] $titre_rub='[(#TITRE|texte_script)]'; ?></BOUCLE_rub_parent>
+	<?php
+		$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'article', '[(#DATE)]', $titre_rub);
+	?>
+
+	<td width="425" valign="top">
+	<div class="centre1">
+	        [<div style="float: right; padding-left: 5px;">(#LOGO_ARTICLE||reduire_image|corriger_img)</div>]
+	<? echo "<a href='sources/$source'><img src='img_rezo/plus.gif' title='$titre_rub' border='0' align='right'></a>"; ?>
+	<a class="centre1" <?php echo href_rezo("#URL_SITE",#ID_ARTICLE); ?>>
+	<span class="auteur">[(#DATE|nom_jour)] [(#DATE|jour)] [(#DATE|nom_mois)]</span>
+	<span class="titre"><?php echo $para["titre"]; ?></span>
+	<span class="auteur" style="text-align: right;"><?php echo $para["auteur"]; ?></span>
+[       <span class="introduction">
+  (#INTRODUCTION|embellir_intro)</span>]
+	</a>
+	</div>
+	</td>
+	</BOUCLE_une>
+
+	<td width="25" valign="top">&nbsp;</td>
+
+	<td width="300" valign="top">
+
+	<div style="width: 300px;">
+	
+	
+  		<INCLURE(table.php3)>
+	
+<!--
+
+               <table cellpadding=0 cellspacing=0 border=0 width="300" style="border: 1px solid white;">
+
+                <tr width="100%">
+                <td width="100%" colspan="2">
+                        <a href="/" class="presse">La sélection du portail</a>
+                </td>
+                </tr>
+				<tr><td width="50%">
+					<div class="actuelle">Dans la presse</div>
+				</td>
+				<td width="50%">
+				<a href="anglais" class="presse">En anglais</a>
+				</td></tr>
+
+                <B_themes>
+                        <tr width="100%">
+                <BOUCLE_themes(MOTS){par extra}{inverse}{doublons}{0,2}>
+                        <td width="50%">
+                        <a href="#URL_MOT" class="mots">[(#TITRE|supprimer_numero)]</a>
+                        </td>
+                </BOUCLE_themes>
+                        </tr>
+                </B_themes>
+
+                <BOUCLE_themes2(BOUCLE_themes)></BOUCLE_themes2>
+              <BOUCLE_themes3(BOUCLE_themes)></BOUCLE_themes3>
+
+                </table>
+-->                
+
+        <div>&nbsp;</div>
+
+
+                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+                <?
+                $sem=0;
+                if ($date) $sem=intval(ereg_replace("-([0-9]+)week.*","\\1",$date));
+                if ($sem) { $url="/presse-".$sem; $jour="-".date("Y-m-d",time()-7*24*60*60*$sem); } else { $url="/presse"; $jour=""; }
+                if ($var_source == "oui") {
+                                echo "<td><a href='$url?var_pardate=oui' class='presse'>par date</a></td>";
+                                echo "<td><div class='actuelle'>par source</div></td>";
+                } else {
+                        echo "<td><div class='actuelle'>par date</div></td>";
+                        echo "<td><a href='$url?var_parsource=oui' class='presse'>par source</a></td>";
+                }
+                ?>
+                </tr></table>
+
+        </div>
+
+	</td>
+</tr>
+</table>
+
+
+
+<table width="750" cellpadding="0" cellspacing="0" border="0">
+
+<tr>
+ <td>&nbsp;
+ </td>
+</tr>
+
+<tr>
+<td width="425" valign="top" rowspan="2">
+	<div style="width: 425px;">
+
+<?php
+	//
+	// Colonne centrale en plusieurs blocs (par date ou par source)
+	// a l interieur de chaque bloc les articles sont tries par date
+	//
+
+	unset($bloc);
+	unset($pop_source);
+	$bloc_valeur = array();
+	if ($var_source)
+		$type_retitrage = 'bloc';
+	else
+		$type_retitrage = 'article';
+
+	<BOUCLE_suiteune(ARTICLES){ps>=3}{doublons}{lang=fr}{id_secteur=118}{age_relatif>=0}{age_relatif<15}{par date}{inverse}{0,50}>
+		<BOUCLE_rub_parent2(RUBRIQUES){id_rubrique}>
+			$id_rub='[(#DESCRIPTIF*|texte_script)]'; $titre_rub='[(#TITRE|texte_script)]'; $code_rub='[(#DESCRIPTIF|texte_script)]'; 
+		</BOUCLE_rub_parent2>
+
+		// engranger les donnees sur les articles visibles dans la colonne du milieu
+		$datenum = [(#DATE|strtotime)];
+		$art=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', $type_retitrage, '[(#DATE)]', $titre_rub);
+		$art["jour"]="[(#DATE|nom_jour)] [(#DATE|jour)] [(#DATE|nom_mois)]";
+		if(date("Y")<>[(#DATE|annee)]) $art["jour"].= " [(#DATE|annee)]";
+		$art["source"]=$code_rub;
+		$art["date"] = $datenum;
+		$art["titre_rub"]=$titre_rub;
+		$art["href_rezo"] = href_rezo("#URL_SITE",#ID_ARTICLE);
+		$art["pop"] = (int)#POPULARITE_ABSOLUE;
+		$art['id_article'] = '#ID_ARTICLE';
+//		if ($auteur_session) $art["auteur"] .= " ".(int)"#POPULARITE_ABSOLUE";
+
+		// nourrir les blocs date et source et leurs criteres de tri
+
+		if ($var_source) {
+			$bloc[$id_rub][] = $art;
+			$bloc_valeur[$id_rub] = max($bloc_valeur[$id_rub],$datenum);
+			$bloc_titre[$id_rub] = $titre_rub;
+		} else {
+			$bloc[$art["jour"]][] = $art;
+			$bloc_valeur[$art["jour"]] = $datenum;
+			$bloc_titre[$art["jour"]] = $art["jour"];
+			if (date("Y")<>[(#DATE|annee)]) $bloc_titre[$datenum].=" [(#DATE|annee)]";
+		}
+	</BOUCLE_suiteune>
+
+	//
+	// ordonner les blocs
+	//
+
+	function tri ($a, $b) {
+		$critere = 'date';	// 'pop'
+		if ($a[$critere] == $b[$critere])
+			return 0;
+		return ($a[$critere] > $b[$critere]) ? -1 : 1;
+	}
+
+	arsort($bloc_valeur);
+	while (list($blocid,$valeur) = each($bloc_valeur)) {
+		if ($var_source) echo "<div style='border: 1px solid white; padding: 5px; margin-bottom: 5px;'>"; 
+		if ($var_source) echo "<a href='sources/$blocid'><img src='img_rezo/plus.gif' title='Tous les articles de cette source' border='0' align='right' style='margin-top: 2px; margin-left: 5px;'></a><!-- pop=".(-$valeur)." -->";
+		echo "<div class='datesep'>".$bloc_titre[$blocid];
+		echo "</div>\n";
+		$contenu = $bloc[$blocid];
+		usort($contenu, 'tri');
+		while (list(,$lig) = each($contenu)) {
+			if (!$var_source) echo "<a href='sources/".$lig["source"]."'><img src='img_rezo/plus.gif' title='".$lig["titre_rub"]."' border='0' align='right' style='margin-top: 9px; margin-left: 5px;'></a>";
+			echo "<a class='centre2' ".$lig["href_rezo"]."><b>".$lig["titre"]."</b>\n";
+			echo "<span class='auteur'>".$lig["auteur"]."</span></a>\n";
+		}
+		if ($var_source) echo "</div>";
+		else echo "<div>&nbsp;</div>\n";
+	}
+
+?>	
+
+
+        <div>&nbsp;</div>
+
+        <div><a href="/presse-<?php $sem=0; if ($date) $sem=(int)ereg_replace("-([0-9]+)week.*","\\1",$date); echo $sem+1; ?>" class='centre2'><b>la semaine pr&eacute;c&eacute;dente</b></a></div>
+        <div>&nbsp;</div>
+
+	</div>
+	</td>
+<td width="25" rowspan="2"><div style="width: 25px;">&nbsp;</div></td>
+<td width="300" valign="top" rowspan="2">
+	
+	<div style="width: 300px;">
+
+               <div class="pavedepeches">
+		<div class="datesep">Et aussi...</div>
+		<BOUCLE_aussi(ARTICLES){doublons}{ps>=2}{age_relatif>0}{lang=fr}{id_secteur=118}{par date}{inverse}{0,70}>
+			<BOUCLE_rub_parent3(RUBRIQUES){id_rubrique}><?php [$source='(#DESCRIPTIF)';] $titre_rub='[(#TITRE|texte_script)]'; ?></BOUCLE_rub_parent3>
+	        <?php 
+			$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', $titre_rub);
+		?>
+			
+	   	<?php // echo "<a href='sources/$source'><img src='img_rezo/plus2.gif' title='$titre_rub' border='0' align='right' style='margin-top: 9px; margin-left: 5px;'></a>"; 
+		?>
+		<a class="depeches" <?php echo href_rezo("#URL_SITE",#ID_ARTICLE); ?>><b><?php echo $para["titre"]; ?></b> <span class="auteur">(<?php echo $para["auteur"]."&nbsp;".$para["date"]; ?>)</span></a>
+		</BOUCLE_aussi>
+		</div>
+
+       <div>&nbsp;</div>
+
+        <form style="padding: 0px; margin: 0px;" method="get" action="http://rezo.net/">
+        <select name="sources" class="sources" onChange="if (options[selectedIndex].value) { location = 'http://rezo.net/sources/'+options[selectedIndex].value; }">
+        <option style="color: black; font-weight: bold">Nos sources</option>
+        <BOUCLE_sources(RUBRIQUES){id_parent=118}{id_rubrique!=1}{par titre}>
+	<option label="#TITRE" value="#DESCRIPTIF" class="liste">#TITRE</option><//B_source_test>
+        </BOUCLE_sources>
+        </select>
+        </form>
+
+        <div>&nbsp;</div>
+        <div style="text-align: center; padding-top: 5px;">
+        <a href="/backend/presse"><img src='http://rezo.net/IMG/xml.gif' border='0' width='36' height='14' /></a>
+        </div>
+
+</div>
+
+</td>
+</tr>
+</table>
+</center>
+</div>
+
+<?php $page="presse"; if ($sem) $page.="-".$sem; echo "<IMG SRC=\"http://rezo.net/count.php?page=".$page."&n=".date("dmHi")."\" WIDTH=1 HEIGHT=1 BORDER=0 ALT=' '>\n"; ?>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+
+</body>
+</html>
