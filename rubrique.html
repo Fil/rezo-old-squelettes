@@ -88,14 +88,14 @@
         <select name="sources" class="sources" onChange="if (options[selectedIndex].value) { location = 'http://rezo.net/sources/'+options[selectedIndex].value; }">
         <option style="color: black; font-weight: bold">Nos sources</option>
         <BOUCLE_sources(RUBRIQUES){id_rubrique!=1}{id_rubrique!=120}{id_rubrique!=182}{par titre}>
-        <?
+        <?php
         	if (#ID_RUBRIQUE == $ze_rubrique) {
         		$sel = " SELECTED";	
         	} else {
         		$sel = "";
         	}
         ?>
-        <BOUCLE_source_test(RUBRIQUES){id_rubrique}{age<30}>
+	<BOUCLE_source_test(RUBRIQUES){id_rubrique}{date>(#DATE|limite_age{30})}>
         	<option label="#TITRE" value="#DESCRIPTIF"<? echo $sel; ?> class="liste" style="font-weight: bold;">#TITRE</option></BOUCLE_source_test><option label="#TITRE"<? echo $sel; ?> value="#DESCRIPTIF" class="liste">#TITRE</option>
         <//B_source_test>
         </BOUCLE_sources>
