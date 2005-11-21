@@ -5,7 +5,7 @@
 <BOUCLE_mot(MOTS){par hasard}>
 $titre[#ID_MOT]='[(#TITRE|texte_script)]';
 $url[#ID_MOT]='#URL_MOT';
-<BOUCLE_art(ARTICLES){id_mot}{par popularite}{inverse}{0,300}>
+<BOUCLE_art(ARTICLES){id_mot}>
 $pop[#ID_MOT]+=#POPULARITE_ABSOLUE;
 </BOUCLE_art>
 </BOUCLE_mot>
