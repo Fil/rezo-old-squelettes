@@ -73,7 +73,7 @@
 	    </item>
 	</BOUCLE3>
 
-	<BOUCLE4(ARTICLES) {lang=fr} {ps>2} {par date} {inverse} {date>(#ENV{date}|limite_age})} {unique}>
+	<BOUCLE4(ARTICLES) {lang=fr} {ps>2} {par date} {inverse} {date>(#ENV{date}|limite_age{3})} {unique}>
 	    <item>
 	      <title>[(#TITRE|retitre|texte_backend)]</title>
 	      <link>#URL_SITE</link>
