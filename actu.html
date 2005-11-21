@@ -1,0 +1,395 @@
+<?php
+	include_local('mes_fonctions.php3');
+	gerer_cookie_rezo();
+?><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<title>Rezo.net - Le portail des copains</title>
+	<link rel="SHORTCUT ICON" href="/img/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link rel="stylesheet" href="spip_style.css" type="text/css" />
+        <style>
+        div.introduction {
+                font-size: 10px;
+                padding: 5px;
+                border: 1px solid #64728B;
+                background-color: #BAC5D9;
+                visibility: hidden;
+                position: absolute;
+                left: 25px;
+                top: 0px;
+                width: 400px;
+                -moz-opacity: 0.9; filter: alpha(opacity=90);
+        }
+        
+        a.ancre {
+        	display: block;
+        	font-size: 11px;
+        	font-weight: bold;
+        	padding: 2px;
+        	padding-left: 4px;
+        	margin-bottom: 2px;
+        	margin-right: 2px;
+        	border-left: 4px solid #8493AD;
+        	color: #8493AD;
+        }
+        a.ancrehaut {
+        	display: block;
+        	font-size: 11px;
+        	font-weight: bold;
+        	padding: 2px;
+        	padding-right: 4px;
+        	margin-bottom: 2px;
+        	margin-left: 2px;
+        	border-right: 4px solid #8493AD;
+        	color: #8493AD;
+        	text-align:right;
+        }
+        a:hover.ancre {
+       		border-left: 4px solid black;
+        	color: black;
+        	background-color: #dddddd;
+        	background-image: url(/img_rezo/vers-bas.gif);
+        	background-repeat: no-repeat;
+        	background-position: center right;
+        }
+        a:hover.ancrehaut {
+       		border-right: 4px solid black;
+        	color: black;
+        	background-color: #dddddd;
+        	background-image: url(/img_rezo/vers-haut.gif);
+        	background-repeat: no-repeat;
+        	background-position: center left;
+        }
+
+        </style>
+
+<?php gerer_body('rezoactu'); ?>
+
+<?php
+
+set_time_limit(0);
+
+
+?>
+
+<div class="bandeau"><a name='haut'></a>
+<center><table width="750" cellpadding="5" cellspacing="0" border="0">
+<tr>
+<td style="text-align:left;" class="maj">
+	 <?php 
+            if ($date) { echo "la s&eacute;lection du [(#DATE|nom_jour)] [(#DATE|jour)] [(#DATE|nom_mois)] [(#DATE|annee)]"; } 
+            else { echo "derni&egrave;re mise &agrave; jour :<br> <b>".majdate()."</b>"; } 
+         ?>
+</td>
+<td style="text-align:right;">
+        <a href="/pourquoi" class="abandeau">Pourquoi ce portail&nbsp;?</a>
+        <a href="/demarrage" class="abandeau">Votre page de d&eacute;marrage</a>
+        <a href="/liste" class="abandeau">La liste de diffusion</a>
+</td>
+</tr></table></center>
+</div>
+
+<div class="bas">
+<center>
+
+<table width="750" cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td width="425" valign="top">
+	<a href="/"><img src="img_rezo/logorezo-bleu.gif" class="logo" alt="rezo.net" width="300" height="83" border="0"></a>
+
+
+</td>
+<td width="125">
+</td>
+<td width="200">
+
+	<?php
+	include('moteur2.php'); 
+	?>
+			
+	<BOUCLE_nb_sources(RUBRIQUES)></BOUCLE_nb_sources>
+	<?php $total_sources = "#TOTAL_BOUCLE";
+	?>
+	<//B_nb_sources>
+			<form style="padding: 0px; margin: 0px; margin-top: 5px;" method="get" action="http://rezo.net/">
+			<select name="sources" style="width: 200px;" class="sources" onChange="if (options[selectedIndex].value) { location = 'http://rezo.net/sources/'+options[selectedIndex].value; }">
+			<option style="color: black; font-weight: bold"><?php echo "Nos $total_sources sources"; ?></option>
+			<BOUCLE_sources(RUBRIQUES){id_parent=0}{par titre}>
+				<option value="#DESCRIPTIF">#TITRE</option>
+			</BOUCLE_sources>
+			</select>
+			</form>
+
+
+
+
+
+</td>
+</tr>
+</table>
+
+<?php
+
+	<BOUCLE_calcul_mots(MOTS){id_groupe==^(1|3|5)$}{par id_groupe}{inverse}>
+		$mot[#ID_MOT]["titre"] = "#TITRE";
+		$mot[#ID_MOT]["url_mot"] = "#URL_MOT";
+		
+		<B_articles_actu>
+			$total_pop = 0;
+		<BOUCLE_articles_actu(ARTICLES){id_mot}{par date}{inverse}{age<7}{0,20}>
+			$total_pop = $total_pop + "#POPULARITE_ABSOLUE";
+		</BOUCLE_articles_actu>
+				if ("#ID_GROUPE" == 5) {
+					if ("#EXTRA" > 0) $total_pop = round($total_pop * 1.5);
+					else $total_pop = round($total_pop / 3);
+				}
+				else if ("#ID_GROUPE" == 3) {
+					if ("#EXTRA" > 0) $total_pop = round($total_pop * 1);
+					else $total_pop = round($total_pop / 3);
+				} else {
+					$total_pop = round($total_pop / 2);
+				}
+		
+				$pop_mot[#ID_MOT] = $total_pop;
+		</B_articles_actu>
+
+	</BOUCLE_calcul_mots>
+
+
+	arsort ($pop_mot);
+	$i = 0;
+	while (list($id_mot,$popularite) = each($pop_mot) AND $i <= 12) {
+
+			$limite_pop = $pop_mot[$id_mot];
+			$i++;
+	}
+
+	<BOUCLE_lactu(MOTS){id_groupe==^(1|3|5)$}{par id_groupe}{inverse}>
+		$total_pop = $pop_mot[#ID_MOT];
+		if ($total_pop > $limite_pop) {
+			
+			$le_mot = #ID_MOT;
+			include ("actubloc.php3");
+		
+			$total_pop = 0;
+				
+			
+			<BOUCLE_article_une(ARTICLES){id_mot}{par popularite}{lang=fr}{inverse}{0,1}{doublons}>
+				<BOUCLE_rub_parent(RUBRIQUES){id_rubrique}>
+					$id_rub='[(#DESCRIPTIF*|texte_script)]'; $titre_rub='[(#TITRE|texte_script)]'; $code_rub='[(#DESCRIPTIF|texte_script)]'; 
+				</BOUCLE_rub_parent>
+				$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', $type_retitrage, '[(#DATE)]', $titre_rub);
+	
+				$retour =  "<div class='centre1'><a href='sources/$code_rub'><img src='img_rezo/plus2.gif' style='margin-top: 4px;' title='$titre_rub' border='0' align='right'></a>";
+				$retour .= "<a class='centre1' ".href_rezo("#URL_SITE",#ID_ARTICLE);
+				$retour .= "<span class='titre'>". $para["titre"]."</span>";
+				$retour .= "<span class='introduction'>";
+				[ $retour.= '<div style="float: right; padding-left: 5px; padding-bottom: 5px;">(#LOGO_ARTICLE||reduire_image{100}|texte_script)</div>';]
+				$retour .= "[(#INTRODUCTION|embellir_intro|addslashes)]</span>";
+				$retour .= "<span class='auteur' style='text-align:right;'>".$para["auteur"].", ".$para["date"]."</span>";
+				$retour .= "</a></div>";
+	
+				$mot[#ID_MOT]["une"] = $retour;
+				
+
+
+			
+			</BOUCLE_article_une>
+	
+			$retour = "";
+			<BOUCLE_suiteune(ARTICLES){ps>=3}{id_mot}{doublons}{lang=fr}{id_rubrique!=79}{age_relatif>=0}{age_relatif<=6}{par popularite}{inverse}{0,3}>
+				<BOUCLE_rub_parent2(RUBRIQUES){id_rubrique}>
+					$id_rub='[(#DESCRIPTIF*|texte_script)]'; $titre_rub='[(#TITRE|texte_script)]'; $code_rub='[(#DESCRIPTIF|texte_script)]'; 
+				</BOUCLE_rub_parent2>
+		
+				// engranger les donnees sur les articles visibles dans la colonne du milieu
+				$datenum = [(#DATE|strtotime)];
+				$art=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', $type_retitrage, '[(#DATE)]', $titre_rub);
+				$art["jour"]="[(#DATE|nom_jour)] [(#DATE|jour)] [(#DATE|nom_mois)]";
+				if(date("Y")<>[(#DATE|annee)]) $art["jour"].= " [(#DATE|annee)]";
+				$art["source"]=$code_rub;
+				$art["secteur"]='#ID_SECTEUR';
+				//$art["date"] = $datenum;
+				$art["titre_rub"]=$titre_rub;
+				$art["intro"] = "[(#INTRODUCTION|embellir_intro|addslashes)]";
+
+				$art["intro"] = '[<div style="float: right; padding-left: 5px; padding-bottom: 5px;">(#LOGO_ARTICLE||reduire_image{120,140}|texte_script)</div>]'.$art["intro"];
+				
+				if ($art["mots"]) $art["intro"] = "<div style='font-size: 11px;'>Thème(s) : <b>".$art["mots"]."</b></div>".$art["intro"];
+				if (ereg("\(([A-Z].*)\)",$art["auteur"],$match)) {
+					$match[1]=ereg_replace(" [0-9].*","",$match[1]);
+					$art["intro"] = "<div style='font-size: 11px;'>Source : <b>".$match[1]."</b></div>".$art["intro"];
+				} else {	
+					$art["intro"] = "<div style='font-size: 11px;'>Source : <b>$titre_rub</b></div>".$art["intro"];
+				}
+				
+				$art["href_rezo"] = href_rezo("#URL_SITE",#ID_ARTICLE);
+				$art['id_article'] = '#ID_ARTICLE';
+	
+				
+				$retour .= "<div>";
+				$retour .= "<div style='position: relative; z-index: 1;'>";
+				if ($art["source"]) $retour .= "<a href='sources/".$art["source"]."'><img src='img_rezo/plus2.gif' title='".$art["titre_rub"]."' border='0' align='right' style='margin-top: 3px; margin-left: 5px;'></a>";
+				$retour .= "<a class='centre2' onMouseOver=\"changestyle('couche".$art["id_article"]."','visible');\" onMouseOut=\"changestyle('couche".$art["id_article"]."','hidden');\" ".$art["href_rezo"]."><b>".$art["titre"].",</b>\n";
+				$retour .= "".$art["auteur"].", ".$art["date"]."</a>\n";
+				$retour .= "</div>\n";
+				$retour .= "<div style='position: relative; z-index: 1000;'><div style='z-index: 1000;' id='couche".$art["id_article"]."' class='introduction'>";
+				$retour .= ($art["intro"])."</div></div>\n";
+				$retour .= "</div>\n";
+	
+			</BOUCLE_suiteune>
+			$mot[#ID_MOT]["suiteune"] = $retour;
+	
+			$retour = "";
+			<BOUCLE_depeches(ARTICLES){ps>=2}{id_mot}{id_rubrique!=79}{age_relatif>=0}{par date}{inverse}{doublons}{0,5}>
+				<BOUCLE_rub_parent3(RUBRIQUES){id_rubrique}> [$source='(#DESCRIPTIF)';] $titre_rub='[(#TITRE|texte_script)]'; </BOUCLE_rub_parent3>
+					$para = retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', $titre_rub);
+					$retour .= "<div><a href='sources/$source'><img src='img_rezo/plus2.gif' title='$titre_rub' border='0' align='right' style='margin-top: 8px; margin-left: 5px;'></a>";
+					$retour .= "<a class=\"depeches\" ".href_rezo("#URL_SITE",#ID_ARTICLE)."><b>".$para["titre"]."</b> <br><span class=\"auteur\">".$para["auteur"].", ".$para["date"]."</span></a></div>\n"; 
+			</BOUCLE_depeches>
+			$mot[#ID_MOT]["depeches1"] = $retour;
+	
+			$retour = "";
+			<BOUCLE_depeches4(ARTICLES){ps>=2}{id_mot}{id_rubrique!=79}{age_relatif>=0}{par date}{inverse}{doublons}{0,5}>
+				<BOUCLE_rub_parent4(RUBRIQUES){id_rubrique}> [$source='(#DESCRIPTIF)';] $titre_rub='[(#TITRE|texte_script)]'; </BOUCLE_rub_parent4>
+					$para = retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', $titre_rub);
+					$retour .= "<a href='sources/$source'><img src='img_rezo/plus2.gif' title='$titre_rub' border='0' align='right' style='margin-top: 8px; margin-left: 5px;'></a>";
+					$retour .= "<a class=\"depeches\" ".href_rezo("#URL_SITE",#ID_ARTICLE)."><b>".$para["titre"]."</b> <br><span class=\"auteur\">".$para["auteur"].", ".$para["date"]."</span></a>\n"; 
+			</BOUCLE_depeches4>
+			$mot[#ID_MOT]["depeches2"] = $retour;
+		}
+	
+	</BOUCLE_lactu>
+
+	arsort ($pop_mot);
+	$i = 0;
+	while (list($id_mot,$popularite) = each($pop_mot)) {
+		if ($pop_mot[$id_mot] > $limite_pop) {
+			$ancre[$i] = "<a href='#theme$id_mot' class='ancre'>".$mot[$id_mot]["titre"]."</a>";
+			$i++;
+		}
+	}
+	$total_ancre = $i;
+
+	echo "<table width='100%' style='width: 750px;' cellpadding='0' cellspacing='0'>";
+	echo "<tr>";
+	echo "<td width='150' valign='bottom'>";
+	for ($i = 0; $i < ceil($total_ancre/3); $i++ ) {
+		echo $ancre[$i];
+	}
+
+	echo "</td>";
+	echo "<td width='150' valign='bottom'>";
+	
+	for ($i = ceil($total_ancre/3); $i < ceil(2*$total_ancre/3); $i++ ) {
+		echo $ancre[$i];
+	}
+	
+	
+	echo "</td>";
+	echo "<td width='150' valign='bottom'>";
+	
+	for ($i = ceil(2*$total_ancre/3); $i <= $total_ancre; $i++ ) {
+		echo $ancre[$i];
+	}
+	
+	
+	
+	echo "</td>";
+	echo "<td width='20'>&nbsp;</td>";
+	echo "<td width='300'>";
+
+	?>
+		<INCLURE(table2.php3)>
+	<?php
+
+	echo "</td>";
+
+	echo "</tr>";
+	echo "<tr>";
+	echo "</table>";
+	echo "<div>&nbsp;</div>";
+
+
+	arsort ($pop_mot);
+	while (list($id_mot,$popularite) = each($pop_mot)) {
+		if ($pop_mot[$id_mot] > $limite_pop) {
+			echo "<table width='100%' style='width: 750px;' cellpadding='0' cellspacing='0'>";
+			echo "<tr>";
+			echo "<td width='250' class='titretheme'>";
+				echo "<a style='font-size: 14px; color: white;' name='theme$id_mot' href='".$mot[$id_mot]["url_mot"]."'><img src='/img_rezo/plus.gif' border='0'> <b>".$mot[$id_mot]["titre"]."</b></a>";
+			echo "</td>";
+			echo "<td width='500' class='titretheme'>";
+				echo "<div style='width: 450px; padding-left: 20px; font-size: 11px; color: white;'>".$mot[$id_mot]["themes"]."</div>";
+			echo "</td>";
+			echo "</tr>";
+			echo "<tr>";
+			echo "<td style='width:250px;' valign='top'>";
+				echo "<div style='height: 5px;'>&nbsp;</div>";
+				echo $mot[$id_mot]["une"];
+			echo "</td>";
+			echo "<td style='width:500px; padding-left: 20px' valign='top'>";
+				echo "<div style='height: 5px;'>&nbsp;</div>";
+				echo $mot[$id_mot]["suiteune"];
+				
+				echo "<div style='text-align:right;'><table width='480' style='width: 100%;' cellpadding='0' border='0' cellspacing='0'>";
+				echo "<tr>";
+				echo "<td style='width: 230px;' valign='top'>";
+				if (strlen($mot[$id_mot]["logoune"]) > 0) {
+					 echo "<div style='text-align:left; padding-top: 5px;'>".$mot[$id_mot]["logoune"]."</div>";
+				} else {
+					 echo "<div>".$mot[$id_mot]["depeches1"]."</div>";
+				}
+				echo "</td>";
+				echo "<td style='width: 20px;'> &nbsp; </td>";
+				echo "<td style='width: 230px; padding-right:0xp;' valign='top'>";
+				if (strlen($mot[$id_mot]["logoune"]) > 0) {
+					echo "<div>".$mot[$id_mot]["depeches1"]."</div>";
+				} else {
+					if (strlen($mot[$id_mot]["logo"]) > 0) {
+						 echo "<div style='text-align:right; padding-top: 5px;'>".$mot[$id_mot]["logo"]."</div>";
+					} else {
+						 echo "<div>".$mot[$id_mot]["depeches2"]."</div>";
+					}
+				}
+				
+				echo "</td>";
+				echo "</tr>";
+				echo "</table></div>";
+				
+				
+			echo "</td>";
+			echo "</tr>";
+			
+			echo "<tr><td width='750' colspan='2' align='right'>";
+				echo "<div style='width: 120px; padding-top: 2px; padding-bottom: 2px;'>";
+				echo "<a href='#haut' class='ancrehaut'>haut de page</a>";
+				echo "</div>";
+			echo "</td></tr>";
+			
+			
+			
+			echo "</table>\n";
+//			echo "<div>&nbsp;</div>";
+		}
+	
+	}
+
+?>
+	
+	
+	
+	
+
+
+</center>
+</div>
+
+<?php $page="rezonews"; echo "<IMG SRC=\"http://rezo.net/count.php?page=".$page."&n=".date("dmHi")."\" WIDTH=1 HEIGHT=1 BORDER=0 ALT=' '>\n"; ?>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+
+</body>
+</html>
