@@ -24,15 +24,6 @@
 </BOUCLE_maj>
 </td>
 
-[(#REM) memoriser les rubriques ]
-<?php
-	$rubriques = array();
-	<BOUCLE_rub_parent2(RUBRIQUES){id_rubrique}>
-		$rubriques['#ID_RUBRIQUE']['source']='[(#DESCRIPTIF|texte_script)]';
-		$rubriques['#ID_RUBRIQUE']['titre']='[(#TITRE|texte_script)]';
-	</BOUCLE_rub_parent2>
-?>
-
 <td style="text-align:right;">
         <a href="/pourquoi" class="abandeau">Pourquoi ce portail&nbsp;?</a>
         <a href="/demarrage" class="abandeau">Votre page de d&eacute;marrage</a>
@@ -95,17 +86,18 @@
         <form style="padding: 0px; margin: 0px;" method="get" action="http://rezo.net/">
         <select name="sources" class="sources" onChange="if (options[selectedIndex].value) { location = 'http://rezo.net/sources/'+options[selectedIndex].value; }">
         <option style="color: black; font-weight: bold">Nos sources</option>
-        <BOUCLE_sources(RUBRIQUES){id_rubrique!=1}{id_rubrique!=120}{id_rubrique!=182}{par titre}>
-        <?php
-        	if (#ID_RUBRIQUE == $ze_rubrique) {
-        		$sel = " SELECTED";	
-        	} else {
-        		$sel = "";
-        	}
-        ?>
-	<BOUCLE_source_test(RUBRIQUES){id_rubrique}{date>(#DATE|limite_age{30})}>
-        	<option label="#TITRE" value="#DESCRIPTIF"<? echo $sel; ?> class="liste" style="font-weight: bold;">#TITRE</option></BOUCLE_source_test><option label="#TITRE"<? echo $sel; ?> value="#DESCRIPTIF" class="liste">#TITRE</option>
-        <//B_source_test>
+        <BOUCLE_sources(RUBRIQUES){id_rubrique !IN 1,120,182}{par titre}>
+[
+	<option label="#TITRE" value="#DESCRIPTIF"
+(#ID_RUBRIQUE
+ |=={#_principale:ID_RUBRIQUE}
+ |?{' selected',''}
+ |sinon{[(#DATE
+ 	  |>{ [(#ENV{date}|limite_age{30})] }
+ 	  |?{' ',''})]}
+)
+	class="liste" style="font-weight: bold;">#TITRE</option>
+]
         </BOUCLE_sources>
         </select>
         </form>
@@ -135,10 +127,7 @@
 		$art[$i]=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'rubrique', '[(#DATE)]', $rubriques['#ID_RUBRIQUE']['titre']);
 		$art[$i]["jour"]="[(#DATE|nom_mois)] [(#DATE|annee)]";
 		$art[$i]["date"]=substr("[(#DATE)]",0,10);
-		$art[$i]["pop"]=intval( #POPULARITE_ABSOLUE );
 		$art[$i]["url"]=href_rezo('[(#URL_SITE|texte_script)]', #ID_ARTICLE);
-		$art[$i]["source"] = $rubriques['#ID_RUBRIQUE']['source'];
-		$art[$i]["titre_rub"] = $rubriques['#ID_RUBRIQUE']['titre'];
 	</BOUCLE_suiteune>
 ?>
 
@@ -148,23 +137,13 @@
 		$art[$i]=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'rubrique', '[(#DATE)]', $rubriques['#ID_RUBRIQUE']['titre']);
 		$art[$i]["jour"]="[(#DATE|nom_mois)] [(#DATE|annee)]";
 		$art[$i]["date"]="[(#DATE|substr{0,10})]";
-		$art[$i]["pop"]=intval( #POPULARITE_ABSOLUE );
 		$art[$i]["url"]=href_rezo('[(#URL_SITE|texte_script)]', #ID_ARTICLE);
-		$art[$i]["source"] = "$source";
-		$art[$i]["titre_rub"] = $rubriques['#ID_RUBRIQUE']['titre'];
 	</BOUCLE_suiteunedep>
 	$aff_dep = true;
 	</B_suiteunedep>
-?>
 
-<?php
-	function compare ($a, $b) {
-		if ($a["date"] == $b["date"]) return 0;
-		return ($a["date"] > $b["date"]) ? -1 : 1;
-	}
 	if (is_array($art)) {
-		usort($art, compare); 
-		  while (list($key,$lig) = each($art))
+		  foreach ($art as $key=>$lig)
 		    {
 			$cgj=0;
 			if ($lig["jour"]!=$jour) { $cgj=1; $jour=$lig["jour"]; } 
