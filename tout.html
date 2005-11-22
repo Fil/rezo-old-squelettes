@@ -65,11 +65,17 @@
 
 <table width="750" cellpadding="0" cellspacing="0" border="0">
 <tr>
+<?php
+	$rubs=array();
+	<BOUCLE_rub_parents(RUBRIQUES)
+		$rubs['#ID_RUBRIQUE']['code'] = '(#DESCRIPTIF|texte_script)';
+		$rubs['#ID_RUBRIQUE']['titre'] ='[(#TITRE|texte_script)]';
+	</BOUCLE_rub_parents>
+?>
 
-	<BOUCLE_une(ARTICLES){ps>=3}{doublons}{age_relatif>=0}{age_relatif<=7}{par popularite}{"<td>&nbsp;</td>"}{inverse}{0,1}>
-	<BOUCLE_rub_parent(RUBRIQUES){id_rubrique}><?php [$source='(#DESCRIPTIF)';] $titre_rub='[(#TITRE|texte_script)]'; ?></BOUCLE_rub_parent>
+	<BOUCLE_une(ARTICLES){ps>=3}{doublons} {date<(#DATE|limite_age{-1})} {date>=(#DATE|limite_age{7})} {par popularite}{"<td>&nbsp;</td>"}{inverse}{0,1}>
 	<?php
-		$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'article', '[(#DATE)]', $titre_rub);
+		$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'article', '[(#DATE)]', $rubs['#ID_RUBRIQUE']['titre']);
 	?>
 
 	<td width="425" valign="top">
@@ -96,38 +102,6 @@
 	
   		<INCLURE(table.php3)>
 	
-<!--
-
-               <table cellpadding=0 cellspacing=0 border=0 width="300" style="border: 1px solid white;">
-
-                <tr width="100%">
-                <td width="100%" colspan="2">
-                        <a href="/" class="presse">La sélection du portail</a>
-                </td>
-                </tr>
-				<tr><td width="50%">
-					<div class="actuelle">Dans la presse</div>
-				</td>
-				<td width="50%">
-				<a href="anglais" class="presse">En anglais</a>
-				</td></tr>
-
-                <B_themes>
-                        <tr width="100%">
-                <BOUCLE_themes(MOTS){par extra}{inverse}{doublons}{0,2}>
-                        <td width="50%">
-                        <a href="#URL_MOT" class="mots">[(#TITRE|supprimer_numero)]</a>
-                        </td>
-                </BOUCLE_themes>
-                        </tr>
-                </B_themes>
-
-                <BOUCLE_themes2(BOUCLE_themes)></BOUCLE_themes2>
-              <BOUCLE_themes3(BOUCLE_themes)></BOUCLE_themes3>
-
-                </table>
--->                
-
         <div>&nbsp;</div>
 
 
@@ -184,23 +158,19 @@
 	else
 		$type_retitrage = 'article';
 
-	<BOUCLE_suiteune(ARTICLES){ps>=2}{lang_select=non}{doublons}{age_relatif>=0}{age_relatif<7}{par date}{inverse}{0,200}>
-		<BOUCLE_rub_parent2(RUBRIQUES){id_rubrique}>
-			$id_rub='[(#DESCRIPTIF*|texte_script)]'; $titre_rub='[(#TITRE|texte_script)]'; $code_rub='[(#DESCRIPTIF|texte_script)]'; 
-		</BOUCLE_rub_parent2>
+	<BOUCLE_suiteune(ARTICLES){ps>=2}{lang_select=non}{doublons} {date<(#DATE|limite_age{-1})} {date>=(#DATE|limite_age{7})} {par date}{inverse}{0,200}>
 
 		// engranger les donnees sur les articles visibles dans la colonne du milieu
 		$datenum = [(#DATE|strtotime)];
-		$art=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', $type_retitrage, '[(#DATE)]', $titre_rub);
+		$art=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', $type_retitrage, '[(#DATE)]', $rubs['#ID_RUBRIQUE']['titre']);
 		$art["jour"]="[(#DATE|nom_jour)] [(#DATE|jour)] [(#DATE|nom_mois)]";
-		if(date("Y")<>[(#DATE|annee)]) $art["jour"].= " [(#DATE|annee)]";
-		$art["source"]=$code_rub;
+		if(date("Y")<>'[(#DATE|annee)]') $art["jour"].= " [(#DATE|annee)]";
+		$art["source"]=$rubs['#ID_RUBRIQUE']['code'];
 		$art["date"] = $datenum;
-		$art["titre_rub"]=$titre_rub;
+		$art["titre_rub"]=$rubs['#ID_RUBRIQUE']['titre'];
 		$art["href_rezo"] = href_rezo("#URL_SITE",#ID_ARTICLE);
-		$art["pop"] = (int)#POPULARITE_ABSOLUE;
+		$art["pop"] = #POPULARITE_ABSOLUE;
 		$art['id_article'] = '#ID_ARTICLE';
-//		if ($auteur_session) $art["auteur"] .= " ".(int)"#POPULARITE_ABSOLUE";
 
 		// nourrir les blocs date et source et leurs criteres de tri
 
@@ -212,7 +182,7 @@
 			$bloc[$art["jour"]][] = $art;
 			$bloc_valeur[$art["jour"]] = $datenum;
 			$bloc_titre[$art["jour"]] = $art["jour"];
-			if (date("Y")<>[(#DATE|annee)]) $bloc_titre[$datenum].=" [(#DATE|annee)]";
+			if (date("Y")<>'[(#DATE|annee)]') $bloc_titre[$datenum].=" [(#DATE|annee)]";
 		}
 	</BOUCLE_suiteune>
 
@@ -258,25 +228,16 @@
 
                <div class="pavedepeches">
 		<div class="datesep">La semaine précédente...</div>
-		<BOUCLE_aussi(ARTICLES){doublons}{ps>=2}{age_relatif>0}{age_relatif<15}{par date}{inverse}{0,200}>
-			<BOUCLE_rub_parent3(RUBRIQUES){id_rubrique}><?php [$source='(#DESCRIPTIF)';] $titre_rub='[(#TITRE|texte_script)]'; ?></BOUCLE_rub_parent3>
-	        <?php 
-			$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', $titre_rub);
+		<BOUCLE_aussi(ARTICLES){doublons}{ps>=2} {date<(#DATE|limite_age{-1})} {date>=(#DATE|limite_age{15})} {par date}{inverse}{0,200}>
+	<?php 
+			$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', $rubs['#ID_RUBRIQUE']['titre']);
 		?>
-			
-	   	<?php // echo "<a href='sources/$source'><img src='img_rezo/plus2.gif' title='$titre_rub' border='0' align='right' style='margin-top: 9px; margin-left: 5px;'></a>"; 
-		?>
+
 		<a class="depeches" <?php echo href_rezo("#URL_SITE",#ID_ARTICLE); ?>><b><?php echo $para["titre"]; ?></b> <span class="auteur">(<?php echo $para["auteur"]."&nbsp;".$para["date"]; ?>)</span></a>
 		</BOUCLE_aussi>
 		</div>
 
        <div>&nbsp;</div>
-
-	<!--
-        <div style="text-align: center; padding-top: 5px;">
-        <a href="/backend/presse"><img src='http://rezo.net/IMG/xml.gif' border='0' width='36' height='14' /></a>
-        </div>
-	-->
 
 </div>
 
