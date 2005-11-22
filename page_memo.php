@@ -88,7 +88,7 @@
 	// On en prend un au hasard parmi les douze plus recents, et une fois sur 5 on accepte 
 	// des URLs problematiques (texte='x')
 	if (!$id_article = intval($id_article)) {
-		$query = "SELECT * FROM spip_articles WHERE NOT(url_site='') AND (ps>2)";
+		$query = "SELECT id_article,url_site,titre FROM spip_articles WHERE NOT(url_site='') AND (ps>2)";
 		if (rand(1,5)>1) {
 			$query .= " AND texte=''";
 			$limit = 12;
