@@ -67,8 +67,8 @@
 <tr>
 <?php
 	$rubs=array();
-	<BOUCLE_rub_parents(RUBRIQUES)
-		$rubs['#ID_RUBRIQUE']['code'] = '(#DESCRIPTIF|texte_script)';
+	<BOUCLE_rub_parents(RUBRIQUES)>
+		$rubs['#ID_RUBRIQUE']['code'] = '[(#DESCRIPTIF|texte_script)]';
 		$rubs['#ID_RUBRIQUE']['titre'] ='[(#TITRE|texte_script)]';
 	</BOUCLE_rub_parents>
 ?>
