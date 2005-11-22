@@ -124,7 +124,7 @@
 <?php
 	<BOUCLE_suiteune(ARTICLES) {ps>=3} {doublons} {id_rubrique} {lang_select=non} {par date} {inverse} {0,180}>
 		$i++;
-		$art[$i]=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'rubrique', '[(#DATE)]', $rubriques['#ID_RUBRIQUE']['titre']);
+		$art[$i]=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'rubrique', '#DATE', $rubriques['#ID_RUBRIQUE']['titre']);
 		$art[$i]["jour"]="[(#DATE|nom_mois)] [(#DATE|annee)]";
 		$art[$i]["date"]=substr("[(#DATE)]",0,10);
 		$art[$i]["url"]=href_rezo('[(#URL_SITE|texte_script)]', #ID_ARTICLE);
