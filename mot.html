@@ -277,22 +277,13 @@
 	// ordonner les blocs
 	//
 
-	function tri ($a, $b) {
-		$critere = 'date';	// 'pop'
-		if ($a[$critere] == $b[$critere])
-			return 0;
-		return ($a[$critere] > $b[$critere]) ? -1 : 1;
-	}
-
 	arsort($bloc_valeur);
 	while (list($blocid,$valeur) = each($bloc_valeur)) {
 		if ($var_source) echo "<div style='border: 1px solid #999999; padding: 5px; margin-bottom: 5px;'>"; 
 		if ($var_source) echo "<a href='/sources/$blocid'><img src='/img_rezo/plus2.gif' title='Tous les articles de cette source' border='0' align='right' style='margin-top: 2px; margin-left: 5px;'></a><!-- pop=".(-$valeur)." -->";
 		echo "<div class='datesep'>".$bloc_titre[$blocid];
 		echo "</div>\n";
-		$contenu = $bloc[$blocid];
-		usort($contenu, 'tri');
-		while (list(,$lig) = each($contenu)) {
+		foreach ($bloc[$blocid] as $lig) {
 			echo "<div>";
 			echo "<div style='position: relative; z-index: 1;'>";
 				if (strlen($lig["logo"]) > 0) {
@@ -335,10 +326,7 @@
 
                <div class="pavedepeches">
 
-<?php 
-if ('#ID_MOT'==623) {
-?>
-
+<BOUCLE_test_l(MOTS){id_mot}{id_mot=623}>
 <B_labas>
         <div class="pavedepeches" style="background: url(img_rezo/vert70.png);">
         <div class="datesep">Des morts qui dérangent (Libération)</div>
@@ -348,10 +336,7 @@ if ('#ID_MOT'==623) {
         </div>
 	<div>&nbsp;</div>
 </B_labas>
-
-<?php
-}
-?>
+</BOUCLE_test_l>
 
 <div class="datesep">Dépêches...</div>
 	<?php
@@ -372,19 +357,19 @@ if ('#ID_MOT'==623) {
 
 	[<div style="text-align: center;"><img src="/IMG/(#LOGO_MOT|fichier)" border="0"></div><div>&nbsp;</div>]
 
-                <div class="datesep">Et aussi...</div>
-                <BOUCLE_aussi2(ARTICLES){doublons}{ps>=2}{id_mot}{par date}{inverse}{0,70}>
-                        <BOUCLE_rub_parent4(RUBRIQUES){id_rubrique}><?php [$source='(#DESCRIPTIF)';] $titre_rub='[(#TITRE|texte_script)]'; ?></BOUCLE_rub_parent4>
-                <?php
-                        $para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', $titre_rub);
-                ?>
-
-                <?php //echo "<a href='/sources/$source'><img src='/img_rezo/plus2.gif' title='$titre_rub' border='0' align='right' style='margin-top: 9px; margin-left: 5px;'></a>";
-                ?>
-
-                <a class="depeches" <?php echo href_rezo("#URL_SITE",#ID_ARTICLE); ?>><b><?php echo $para["titre"]; ?></b> <span class="auteur">(<?php echo $para["auteur"]."&nbsp;".$para["date"]; ?>)</span></a>
-                </BOUCLE_aussi2>
-                </div>
+<div class="datesep">Et aussi...</div><?php
+<BOUCLE_aussi2(ARTICLES){doublons}{ps>=2}{id_mot}{par date}{inverse}{0,70}>
+	$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', $rubs['#ID_RUBRIQUE']['titre']);
+	echo '<a class="depeches"';
+	echo href_rezo("#URL_SITE",#ID_ARTICLE);
+	echo '><b>';
+	echo $para["titre"]
+	echo '</b> <span class="auteur">(';
+	echo $para["auteur"]."&nbsp;".$para["date"];
+	echo ')</span></a>'."\n";
+</BOUCLE_aussi2>
+?>
+</div>
 
 	<div>&nbsp;</div>
 
