@@ -1,0 +1,226 @@
+			<table cellpadding=0 cellspacing=0 border=0 width="100%">
+
+                <tr width="100%">
+                <td width="100%" colspan="2">
+		        <?php
+			          if ($date) { echo "<a href=\"/\" class=\"presse\">Aujourd'hui</a>"; }
+			          else { if ($_SERVER["PHP_SELF"] == "/index.php3" OR $_SERVER["PHP_SELF"] == "/large" OR $_SERVER["PHP_SELF"] == "/rezo800")
+				    { echo "<div class=\"actuelle\">La s&eacute;lection du portail</div>"; }
+				    else { echo "<a href=\"/\" class=\"presse\">La sélection du portail</a>"; }
+				  }
+			?>
+                </td>
+                </tr>
+				<tr><td width="50%">
+                                <? if ($_SERVER["PHP_SELF"] == "/actu") {
+                                        echo '<div class="actuelle">Actualité</div>';
+                                } else {
+                                        echo '<a href="/actu" class="presse">Actualité</a>';
+                                } ?>
+				</td>
+				<td width="50%">
+
+                                <? if ($_SERVER["PHP_SELF"] == "/bestof") {
+                                        echo '<div class="actuelle">Best Of</div>';
+                                } else {
+                                        echo '<a href="/bestof" class="presse">Best Of</a>';
+                                } ?>
+				</td></tr>
+				<tr><td width="50%">
+				<? if ($_SERVER["PHP_SELF"] == "/presse") {
+					echo '<div class="actuelle">Dans la presse</div>';
+				} else {
+					echo '<a href="/presse" class="presse">Dans la presse</a>';
+				} ?>
+				</td>
+				<td width="50%">
+				<? if ($_SERVER["PHP_SELF"] == "/anglais") {
+					echo '<div class="actuelle">En anglais</div>';
+				} else {
+					echo '<a href="/anglais" class="presse">En anglais</a>';
+				} ?>
+				</td></tr>
+				</table>
+				
+				<div style="position: relative;">
+        		<div style="position: absolute; visibility: hidden; z-index: 2000; top: 0px; left: -150px;" id="lesrubs">
+
+             	 	<table cellpadding=0 cellspacing=0 border=0 onMouseOut="changestyle('lesrubs','hidden');">
+             	 	<B_les_rubs>
+               	 	<tr>
+					<BOUCLE_les_rubs(MOTS){id_groupe=4}{extra>0}{par extra}{0,3}{doublons}>
+					<td width="150" onMouseOver="changestyle('lesrubs','visible'); changestyle('lesthemes','hidden'); changestyle('lactu','hidden');">
+						<?
+						if ($ze_mot == #ID_MOT) {
+						?>
+							<div class="actuelle">#TITRE</div>
+						<? } else { ?>
+							<a class="motsrub" href="#URL_MOT">#TITRE</a>
+						<?
+						}
+						?>
+					</td>
+					</BOUCLE_les_rubs>
+					</tr>
+						<BOUCLE_les_rubs_suite(BOUCLE_les_rubs)></BOUCLE_les_rubs_suite>
+					</B_les_rubs>
+ 					</table>
+            	 	<table cellpadding=0 cellspacing=0 border=0>
+             	 	<tr><td width="150">
+  							<div class="onglet" style="width: 120px; -moz-border-radius-bottomright: 10px; -moz-border-radius-bottomleft: 10px;"><b>Rubriques</b></div>
+             	 	</td></tr>
+             	 	</table>
+				
+				</div>
+				<div style="position: relative; z-index: 1;" id="lesrubsoff" onMouseOver="changestyle('lesrubs', 'visible');">
+				<B_les_rubs_aff>
+					<table cellpadding=0 cellspacing=0 border=0>
+					<tr>				
+				<BOUCLE_les_rubs_aff(MOTS){id_groupe=4}{extra>0}{par extra}{1,2}>
+					<td width="150">
+						<?
+						if ($ze_mot == #ID_MOT) {
+						?>
+							<div class="actuelle">#TITRE</div>
+						<? } else { ?>
+							<a class="motsrub" href="#URL_MOT">#TITRE</a>
+						<?
+						}
+						?>
+					</td>
+				</BOUCLE_les_rubs_aff>
+					</tr>
+					</table>
+				</B_les_rubs_aff>
+				</div>
+				</div>
+
+ 
+ 
+
+				<div style="position: relative; z-index: 3000;">
+        		<div id="lactu" style='position: absolute; visibility: hidden; top: 0px; left: -150px; z-index: 2000;'>
+	             	<table cellpadding=0 cellspacing=0 border=0 onMouseOut="changestyle('lactu','hidden');">
+             	 	<B_lactu>
+              	 	<tr>
+					<BOUCLE_lactu(MOTS){id_groupe=5}{extra>0}{par extra}{0,3}{doublons}>
+					<td width="150" onMouseOver="changestyle('lesrubs','hidden'); changestyle('lesthemes','hidden'); changestyle('lactu','visible');">
+						<?
+						if ($ze_mot == #ID_MOT) {
+						?>
+							<div class="actuelle">#TITRE</div>
+						<? } else { ?>
+							<a class="motsactu" href="#URL_MOT">#TITRE</a>
+						<?
+						}
+						?>
+					</td>
+					</BOUCLE_lactu>
+					</tr>
+						<BOUCLE_lactu_suite(BOUCLE_lactu)></BOUCLE_lactu_suite>
+					</B_lactu>
+					</table>
+             	 	<table cellpadding=0 cellspacing=0 border=0>
+             	 	<tr><td width="150">
+  							<div class="onglet" style="width: 120px; -moz-border-radius-bottomright: 10px; -moz-border-radius-bottomleft: 10px;"><b>Actualité</b></div>
+             	 	</td></tr>
+             	 	</table>
+				
+				</div>
+				<div style="position: relative; width: 300; z-index: 1;" onMouseOver="changestyle('lactu', 'visible');">
+				<B_lactu_aff>
+					<table cellpadding=0 cellspacing=0 border=0>
+					<tr>				
+				<BOUCLE_lactu_aff(MOTS){id_groupe=5}{extra>0}{par extra}{1,2}>
+					<td width="150">
+						<?
+						if ($ze_mot == #ID_MOT) {
+						?>
+							<div class="actuelle">#TITRE</div>
+						<? } else { ?>
+							<a class="motsactu" href="#URL_MOT">#TITRE</a>
+						<?
+						}
+						?>
+					</td>
+				</BOUCLE_lactu_aff>
+					</tr>
+					</table>
+				</B_les_actu_aff>
+				</div>
+				</div>
+
+
+ 				<div style="position: relative; z-index: 3000;" onMouseOver="changestyle('lesthemes', 'visible');">
+				<B_les_themes_aff>
+					<table cellpadding=0 cellspacing=0 border=0>
+					<tr>				
+					<BOUCLE_les_themes_aff(MOTS){id_groupe=3}{extra>0}{par extra}{1,2}>
+					<td width="150">
+						<?
+						if ($ze_mot == #ID_MOT) {
+						?>
+							<div class="actuelle">#TITRE</div>
+						<? } else { ?>
+							<a class="mots" href="#URL_MOT">#TITRE</a>
+						<?
+						}
+						?>
+					</td>
+					</BOUCLE_les_themes_aff>
+					</tr>
+					</table>
+				</B_les_themes_aff>
+       			<div id="lesthemes" style='position: absolute; visibility: hidden; top: 0px;  left: -150px; z-index: 20000;'>
+             	 	<table cellpadding=0 cellspacing=0 border=0 onMouseOut="changestyle('lesthemes','hidden');">
+           	 		<B_les_themes>
+             	 	<tr>
+					<BOUCLE_les_themes(MOTS){id_groupe=3}{extra>0}{par extra}{0,3}{doublons}>
+					<td width="150" onMouseOver="changestyle('lesrubs','hidden'); changestyle('lesthemes','visible'); changestyle('lactu','hidden');">
+						<?
+						if ($ze_mot == #ID_MOT) {
+						?>
+							<div class="actuelle">#TITRE</div>
+						<? } else { ?>
+							<a class="mots" href="#URL_MOT">#TITRE</a>
+						<?
+						}
+						?>
+					</td>
+					</BOUCLE_les_themes>
+					</tr>
+						<BOUCLE_les_themes_suite(BOUCLE_les_themes)></BOUCLE_les_themes_suite>
+					</B_les_themes>
+					</table>
+             	 	<table cellpadding=0 cellspacing=0 border=0>
+             	 	<tr><td width="150" onMouseOver="changestyle('lesrubs','hidden'); changestyle('lesthemes','visible'); changestyle('lactu','hidden');">
+             	 		<form method="get" action="http://rezo.net/" style="margin: 0px; padding: 0px;">
+             	 		<select style="text-align: left; width: 100%; font-size: 10px; background-color: #f09450; color: white;" onChange="if (options[selectedIndex].value) { location = 'http://rezo.net'+options[selectedIndex].value; }">
+  							<option>Les autres thèmes
+  						<BOUCLE_tous_mots(MOTS){par titre}{id_groupe==^(1|3|4|5)$}{doublons}>
+  							<? if ("#ID_MOT" == "$ze_mot") {
+  							?>
+   								<option style="background-color: #748F8A;" value="#URL_MOT" selected>#TITRE
+ 							<?
+  							} else {
+  							?>
+  								<option value="#URL_MOT">#TITRE
+  							<?
+  							}
+  							?>
+  							
+  						</BOUCLE_tous_mots>	
+  						</select>
+  						</form>
+             	 	</td>
+             	 	</tr>
+             	 	<tr>
+             	 	<td width="150"">
+  							<div  class="onglet" style="width: 120px; -moz-border-radius-bottomleft: 10px; -moz-border-radius-bottomright: 10px;"><b>Thèmes</b></div>
+             	 	</td>
+             	 	</tr>
+             	 	</table>
+             	 	<div style="border: 0px solid green;" onMouseOut="changestyle('lesthemes','hidden');">
+             	 	&nbsp;</div>
+          		</div>
+				</div>
