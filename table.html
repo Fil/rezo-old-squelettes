@@ -12,7 +12,7 @@
                 </td>
                 </tr>
 				<tr><td width="50%">
-                                <? if ($_SERVER["PHP_SELF"] == "/actu") {
+                                <?php if ($_SERVER["PHP_SELF"] == "/actu") {
                                         echo '<div class="actuelle">Actualité</div>';
                                 } else {
                                         echo '<a href="/actu" class="presse">Actualité</a>';
@@ -20,21 +20,21 @@
 				</td>
 				<td width="50%">
 
-                                <? if ($_SERVER["PHP_SELF"] == "/bestof") {
+                                <?php if ($_SERVER["PHP_SELF"] == "/bestof") {
                                         echo '<div class="actuelle">Best Of</div>';
                                 } else {
                                         echo '<a href="/bestof" class="presse">Best Of</a>';
                                 } ?>
 				</td></tr>
 				<tr><td width="50%">
-				<? if ($_SERVER["PHP_SELF"] == "/presse") {
+				<?php if ($_SERVER["PHP_SELF"] == "/presse") {
 					echo '<div class="actuelle">Dans la presse</div>';
 				} else {
 					echo '<a href="/presse" class="presse">Dans la presse</a>';
 				} ?>
 				</td>
 				<td width="50%">
-				<? if ($_SERVER["PHP_SELF"] == "/anglais") {
+				<?php if ($_SERVER["PHP_SELF"] == "/anglais") {
 					echo '<div class="actuelle">En anglais</div>';
 				} else {
 					echo '<a href="/anglais" class="presse">En anglais</a>';
@@ -50,13 +50,13 @@
                	 	<tr>
 					<BOUCLE_les_rubs(MOTS){id_groupe=4}{extra>0}{par extra}{0,3}{doublons}>
 					<td width="150" onMouseOver="changestyle('lesrubs','visible'); changestyle('lesthemes','hidden'); changestyle('lactu','hidden');">
-						<?
+						<?php
 						if ($ze_mot == #ID_MOT) {
 						?>
 							<div class="actuelle">#TITRE</div>
-						<? } else { ?>
+						<?php } else { ?>
 							<a class="motsrub" href="#URL_MOT">#TITRE</a>
-						<?
+						<?php
 						}
 						?>
 					</td>
@@ -78,13 +78,13 @@
 					<tr>				
 				<BOUCLE_les_rubs_aff(MOTS){id_groupe=4}{extra>0}{par extra}{1,2}>
 					<td width="150">
-						<?
+						<?php
 						if ($ze_mot == #ID_MOT) {
 						?>
 							<div class="actuelle">#TITRE</div>
-						<? } else { ?>
+						<?php } else { ?>
 							<a class="motsrub" href="#URL_MOT">#TITRE</a>
-						<?
+						<?php
 						}
 						?>
 					</td>
@@ -105,13 +105,13 @@
               	 	<tr>
 					<BOUCLE_lactu(MOTS){id_groupe=5}{extra>0}{par extra}{0,3}{doublons}>
 					<td width="150" onMouseOver="changestyle('lesrubs','hidden'); changestyle('lesthemes','hidden'); changestyle('lactu','visible');">
-						<?
+						<?php
 						if ($ze_mot == #ID_MOT) {
 						?>
 							<div class="actuelle">#TITRE</div>
-						<? } else { ?>
+						<?php } else { ?>
 							<a class="motsactu" href="#URL_MOT">#TITRE</a>
-						<?
+						<?php
 						}
 						?>
 					</td>
@@ -133,13 +133,13 @@
 					<tr>				
 				<BOUCLE_lactu_aff(MOTS){id_groupe=5}{extra>0}{par extra}{1,2}>
 					<td width="150">
-						<?
+						<?php
 						if ($ze_mot == #ID_MOT) {
 						?>
 							<div class="actuelle">#TITRE</div>
-						<? } else { ?>
+						<?php } else { ?>
 							<a class="motsactu" href="#URL_MOT">#TITRE</a>
-						<?
+						<?php
 						}
 						?>
 					</td>
@@ -157,13 +157,13 @@
 					<tr>				
 					<BOUCLE_les_themes_aff(MOTS){id_groupe=3}{extra>0}{par extra}{1,2}>
 					<td width="150">
-						<?
+						<?php
 						if ($ze_mot == #ID_MOT) {
 						?>
 							<div class="actuelle">#TITRE</div>
-						<? } else { ?>
+						<?php } else { ?>
 							<a class="mots" href="#URL_MOT">#TITRE</a>
-						<?
+						<?php
 						}
 						?>
 					</td>
@@ -177,13 +177,13 @@
              	 	<tr>
 					<BOUCLE_les_themes(MOTS){id_groupe=3}{extra>0}{par extra}{0,3}{doublons}>
 					<td width="150" onMouseOver="changestyle('lesrubs','hidden'); changestyle('lesthemes','visible'); changestyle('lactu','hidden');">
-						<?
+						<?php
 						if ($ze_mot == #ID_MOT) {
 						?>
 							<div class="actuelle">#TITRE</div>
-						<? } else { ?>
+						<?php } else { ?>
 							<a class="mots" href="#URL_MOT">#TITRE</a>
-						<?
+						<?php
 						}
 						?>
 					</td>
@@ -198,14 +198,14 @@
              	 		<select style="text-align: left; width: 100%; font-size: 10px; background-color: #f09450; color: white;" onChange="if (options[selectedIndex].value) { location = 'http://rezo.net'+options[selectedIndex].value; }">
   							<option>Les autres thèmes
   						<BOUCLE_tous_mots(MOTS){par titre}{id_groupe==^(1|3|4|5)$}{doublons}>
-  							<? if ("#ID_MOT" == "$ze_mot") {
+  							<?php if ("#ID_MOT" == "$ze_mot") {
   							?>
    								<option style="background-color: #748F8A;" value="#URL_MOT" selected>#TITRE
- 							<?
+ 							<?php
   							} else {
   							?>
   								<option value="#URL_MOT">#TITRE
-  							<?
+  							<?php
   							}
   							?>
   							

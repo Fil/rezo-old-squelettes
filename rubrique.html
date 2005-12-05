@@ -122,7 +122,7 @@
 	<div style="width: 425px;">
 
 <?php
-	<BOUCLE_suiteune(ARTICLES) {ps>=3} {doublons} {id_rubrique} {lang_select=non} {par date} {inverse} {0,180}>
+	<BOUCLE_suiteune(ARTICLES) {ps>=2} {doublons} {id_rubrique} {lang_select=non} {par date} {inverse} {0,120}>
 		$i++;
 		$art[$i]=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'rubrique', '#DATE', $rubriques['#ID_RUBRIQUE']['titre']);
 		$art[$i]["jour"]="[(#DATE|nom_mois)] [(#DATE|annee)]";
@@ -132,16 +132,6 @@
 ?>
 
 <?php
-	<BOUCLE_suiteunedep(ARTICLES) {ps=2} {doublons} {id_rubrique} {lang_select=non} {par date} {inverse} {0,180}>
-		$i ++;
-		$art[$i]=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'rubrique', '[(#DATE)]', $rubriques['#ID_RUBRIQUE']['titre']);
-		$art[$i]["jour"]="[(#DATE|nom_mois)] [(#DATE|annee)]";
-		$art[$i]["date"]="[(#DATE|substr{0,10})]";
-		$art[$i]["url"]=href_rezo('[(#URL_SITE|texte_script)]', #ID_ARTICLE);
-	</BOUCLE_suiteunedep>
-	$aff_dep = true;
-	</B_suiteunedep>
-
 	if (is_array($art)) {
 		  foreach ($art as $key=>$lig)
 		    {
@@ -170,22 +160,9 @@
 	
 	<div style="width: 300px;">
 
-		<? if (!$aff_dep) { ?>
-		<B_depeches>
-		<div class="datesep">Dépêches</div>
-		<BOUCLE_depeches(ARTICLES){doublons}{ps=2}{0,20}{id_rubrique}{par date}{inverse}>
-	        <?php 
-				$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', '');
-			?>
-			
-			<a <?php echo href_rezo('[(#URL_SITE|texte_script)]',#ID_ARTICLE); ?> class="depeches"><?php echo $para["titre"]; ?><br /> <span class="auteur">(<?php if ($para["auteur"]) echo $para["auteur"]."&nbsp;"; echo $para["date"]; ?>)</span></a>
-		</BOUCLE_depeches>
-		<div>&nbsp;</div>
-		</B_depeches>
-		<? } ?>
 		<B_aussi>
-		<div class="datesep">et aussi...</div>
-		<BOUCLE_aussi(ARTICLES){doublons}{ps>0}{0,200}{id_rubrique}{par date}{inverse}>
+		<div class="datesep">Et aussi...</div>
+		<BOUCLE_aussi(ARTICLES){doublons}{ps>=2}{0,80}{id_rubrique}{par date}{inverse}>
 	        <?php 
 				$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', '');
 			?>
