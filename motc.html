@@ -85,16 +85,16 @@
          	[(#TITRE|supprimer_numero)]
         </div>
 		<BOUCLE_test_artheme(MOTS){id_mot}{id_groupe!=4}>
+	    <?php 
 		<B_artthemes>
 		<BOUCLE_artthemes(ARTICLES){id_mot}{ps>=3}{par date}{inverse}{0,30}>
 		  <BOUCLE_motthemes(MOTS){id_article}{id_groupe!=4}{id_groupe!=2}>
-		    <?php 
 			$CONX['#ID_MOT']++; 
 			$TITRE['#ID_MOT']='[(#TITRE)]'; 
 			$URL['#ID_MOT']='#URL_MOT';
-		    ?>
 		  </BOUCLE_motthemes>
 		</BOUCLE_artthemes>
+	    ?>
 
 		<div style="padding-top: 0px; font-size: 10px; text-align: center;">
 		<?php 
