@@ -65,6 +65,10 @@
 	include_ecrire('inc_charsets.php3');
 	include_ecrire('inc_sites.php3');
 
+	// on en profite pour faire un cron qui fixe les secteurs (parce qu'on est flemmards)
+	include_ecrire('inc_rubriques.php3');
+	propager_les_secteurs();
+
 	// stats
 	if ($debug) {
 		$stats = array(
