@@ -1,6 +1,6 @@
 <?php
   $TAILLEG=25;
-  $TAILLED=22;
+  $TAILLED=25;
   if (strpos($HTTP_HOST,"ews")) { header("Location: /actu"); exit(1); }
   if (($preference=="1024")&&(!strpos($REQUEST_URI,"800"))) { header("Location: /large"); exit(1); }
   //if (!strpos($REQUEST_URI,"ezo800")) { header("Location: /anniv"); exit(1); }

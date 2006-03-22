@@ -167,7 +167,7 @@
 				$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', '');
 			?>
 			
-			<a <?php echo href_rezo('[(#URL_SITE|texte_script)]',#ID_ARTICLE); ?> class="depeches"><?php echo $para["titre"]; ?><br /> <span class="auteur">(<?php if ($para["auteur"]) echo $para["auteur"]."&nbsp;"; echo $para["date"]; ?>)</span></a>
+			<a <?php echo href_rezo('[(#URL_SITE|texte_script)]',#ID_ARTICLE); ?> class="depeches"><?php echo $para["titre"]; ?> <span class="auteur">(<?php if ($para["auteur"]) echo $para["auteur"]."&nbsp;"; echo $para["date"]; ?>)</span></a>
 		</BOUCLE_aussi>
 
 </div>
