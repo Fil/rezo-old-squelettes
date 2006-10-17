@@ -122,7 +122,7 @@
 	<div style="width: 425px;">
 
 <?php
-	<BOUCLE_suiteune(ARTICLES) {ps>=3} {doublons} {id_rubrique} {lang_select=non} {par date} {inverse} {0,120}>
+	<BOUCLE_suiteune(ARTICLES) {ps>=2} {doublons} {id_rubrique} {lang_select=non} {par date} {inverse} {0,200}>
 		$i++;
 		$art[$i]=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'rubrique', '#DATE', $rubriques['#ID_RUBRIQUE']['titre']);
 		$art[$i]["jour"]="[(#DATE|nom_mois)] [(#DATE|annee)]";
@@ -162,7 +162,7 @@
 
 		<B_aussi>
 		<div class="datesep">Et aussi...</div>
-		<BOUCLE_aussi(ARTICLES){doublons}{ps>=2}{0,80}{id_rubrique}{par date}{inverse}>
+		<BOUCLE_aussi(ARTICLES){doublons}{ps>=2}{0,200}{id_rubrique}{par date}{inverse}>
 	        <?php 
 				$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', '');
 			?>
@@ -170,7 +170,24 @@
 			<a <?php echo href_rezo('[(#URL_SITE|texte_script)]',#ID_ARTICLE); ?> class="depeches"><?php echo $para["titre"]; ?> <span class="auteur">(<?php if ($para["auteur"]) echo $para["auteur"]."&nbsp;"; echo $para["date"]; ?>)</span></a>
 		</BOUCLE_aussi>
 
-</div>
+
+[(#ID_RUBRIQUE|=={223}|?{"
+ <!-- special sources/bereno -->
+
+ Dans les nouvelles démocraties, les représentants du peuple peuvent
+ voter pour la légalisation de la torture ou les hauts fonctionnaires de
+ l'État peuvent menacer des personnes afin qu'elles cessent d'aller à
+ contre-courant de la propagande l'information officielle.
+<br /> Dans les nouveaux médias, les <a
+ href='http://blog.monolecte.fr/post/2006/10/04/Silence-on-souffre'>écrits
+ censurés</a> ne peuvent jamais être
+ complètement anéantis et ils renaissent fatalement de leurs cendres pour
+ se répandre ensuite comme un virus bienfaiteur.
+<br /> Les notes de Bereno du Journal d'un inspecteur du travail
+ sont de nouveau accessibles à tous : lisez,
+ prenez, diffusez-en tous, ceci un acte de résistance!
+",''})]
+	</div>
 
 </td>
 </tr>

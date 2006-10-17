@@ -219,7 +219,7 @@
 	else
 		$type_retitrage = 'article';
 
-	<BOUCLE_suiteune(ARTICLES){lang_select=non}{ps>=3}{doublons}{id_mot}{date<(#DATE|limite_age{-1})}{par date}{inverse}{0,50}>
+	<BOUCLE_suiteune(ARTICLES){lang_select=non}{ps>=3}{doublons}{id_mot}{date<(#DATE|limite_age{-1})}{par date}{inverse}{0,170}>
 	$id_rub = $code_rub =$rubs['#ID_RUBRIQUE']['source'];
 	$titre_rub=$rubs['#ID_RUBRIQUE']['titre'];
 	$addsource['#ID_RUBRIQUE']++;
@@ -228,7 +228,7 @@
 	$datenum = [(#DATE|strtotime)];
 	$art=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', $type_retitrage, '[(#DATE)]', $titre_rub);
 	$art["jour"]="[(#DATE|nom_jour)] [(#DATE|jour)] [(#DATE|nom_mois)]";
-	if ("#DATE"<"2005-04-01") $art["jour"]="[(#DATE|nom_mois)] [(#DATE|annee)]";
+	if ("#DATE"<"2006-01-01") $art["jour"]="[(#DATE|nom_mois)] [(#DATE|annee)]";
 	$art["source"]=$code_rub;
 	$art["secteur"]='#ID_SECTEUR';
 	$art["date"] = $datenum;
@@ -257,7 +257,7 @@
 	$art['id_article'] = '#ID_ARTICLE';
 
 	// nourrir les blocs date et source et leurs criteres de tri
-	if (($NB[$art["secteur"]]++<=100)&&($NBTOT++<=100)) {
+	if (($NB[$art["secteur"]]++<=200)&&($NBTOT++<=220)) {
 		if ($var_source) {
 			$bloc[$id_rub][] = $art;
 			$bloc_valeur[$id_rub] = max($bloc_valeur[$id_rub],$datenum);
@@ -345,7 +345,7 @@
 	[<div style="text-align: center;"><img src="/IMG/(#LOGO_MOT|fichier)" border="0"></div><div>&nbsp;</div>]
 
 <div class="datesep">Et aussi...</div><?php
-<BOUCLE_aussi2(ARTICLES){doublons}{ps>=2}{id_mot}{par date}{inverse}{0,70}>
+<BOUCLE_aussi2(ARTICLES){doublons}{ps>=2}{id_mot}{par date}{inverse}{0,250}>
 	$addsource['#ID_RUBRIQUE']++;
 	$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', $rubs['#ID_RUBRIQUE']['titre']);
 	echo '<a class="depeches"';

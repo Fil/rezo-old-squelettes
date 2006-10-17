@@ -1,6 +1,6 @@
 <?php
-  $TAILLEG=25;
-  $TAILLED=25;
+  $TAILLEG=20;
+  $TAILLED=18;
   if (strpos($HTTP_HOST,"ews")) { header("Location: /actu"); exit(1); }
   if (($preference=="1024")&&(!strpos($REQUEST_URI,"800"))) { header("Location: /large"); exit(1); }
   //if (!strpos($REQUEST_URI,"ezo800")) { header("Location: /anniv"); exit(1); }
@@ -288,7 +288,7 @@
                 <div class="pavedepeches">
                 <div class="datesep"><a href='/tout'><img src='/img_rezo/plus2.gif' title='#TITRE' border='0' align='right' style='margin-top: 2px; margin-left: 5px;'></a>Et aussi...</div>
 
-		<BOUCLE_depeches(ARTICLES){lang=fr}{ps>=2}{id_rubrique!=79}{date<(#ENV{date}|limite_age{-1})}{date>=(#ENV{date}|limite_age{10})}{par date}{inverse}{0,60}>
+		<BOUCLE_depeches(ARTICLES){ps>=2}{lang=fr}{id_rubrique!=79}{date<(#ENV{date}|limite_age{-1})}{date>=(#ENV{date}|limite_age{10})}{par date}{inverse}{0,60}>
 			<BOUCLE_rub_parent3(RUBRIQUES){id_rubrique}><?php [$source='(#DESCRIPTIF)';] $titre_rub='[(#TITRE|texte_script)]'; ?></BOUCLE_rub_parent3>
 	        <?php 
 			if ((!$deja['#ID_ARTICLE'])&&($cpt++<=$TAILLED)) { 
