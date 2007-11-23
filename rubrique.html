@@ -8,7 +8,7 @@
 	<title>Rezo.net - [(#TITRE|textebrut)]</title>
 	<link rel="SHORTCUT ICON" href="/img/favicon.ico" />
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-        <meta name="ROBOTS" content="INDEX,FOLLOW,NOARCHIVE">
+       <meta name="ROBOTS" content="INDEX,FOLLOW,NOARCHIVE">
 	<link rel="stylesheet" href="spip_style.css" type="text/css" />
 <?php gerer_body('rezogris'); ?>
 <?
@@ -122,7 +122,7 @@
 	<div style="width: 425px;">
 
 <?php
-	<BOUCLE_suiteune(ARTICLES) {ps>=2} {doublons} {id_rubrique} {lang_select=non} {par date} {inverse} {0,200}>
+	<BOUCLE_suiteune(ARTICLES) {ps>=2} {doublons} {id_rubrique} {lang_select=non} {par date} {inverse} {0,130}>
 		$i++;
 		$art[$i]=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'rubrique', '#DATE', $rubriques['#ID_RUBRIQUE']['titre']);
 		$art[$i]["jour"]="[(#DATE|nom_mois)] [(#DATE|annee)]";
@@ -162,7 +162,7 @@
 
 		<B_aussi>
 		<div class="datesep">Et aussi...</div>
-		<BOUCLE_aussi(ARTICLES){doublons}{ps>=2}{0,200}{id_rubrique}{par date}{inverse}>
+		<BOUCLE_aussi(ARTICLES){doublons}{ps>=2}{0,150}{id_rubrique}{par date}{inverse}>
 	        <?php 
 				$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', '');
 			?>

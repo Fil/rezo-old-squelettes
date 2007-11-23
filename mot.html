@@ -15,6 +15,7 @@
                 $ze_mot = "#ID_MOT";
                 $ze_groupe = "#ID_GROUPE";
                 $ze_titre = 'Rezo.net - '.'[(#TITRE|texte_script)]';
+		if ($ze_mot==636) $ze_titre="Bulle immobilière et crise du crédit";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -23,6 +24,7 @@
 	<title><?php echo $ze_titre; ?></title>
 	<link rel="SHORTCUT ICON" href="/img/favicon.ico" />
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<base href="http://rezo.net/dossiers/">
 	<meta name="ROBOTS" content="INDEX,FOLLOW,NOARCHIVE">
 	<META name="keywords" lang="fr" content="[(#TEXTE|texte_script|enleve_bayesiens)]">
 	<link rel="stylesheet" href="/spip_style.css" type="text/css" />
@@ -109,10 +111,17 @@
 			    			$bloc_mot .= " <a href='".$letheme["url"]."' class='motslies'>". $letheme["titre"]."</a>";
 			    		}
 			}
+			if ($id_mot!=636) {
 			if ($bloc_mot) {
 				?>Thèmes liés à « <b>#TITRE</b> » :<br> <?php
 				echo $bloc_mot;
+			} }
+			else
+			{
+			  echo "<div class=citation>&laquo;&nbsp;L'accroissement mondial des prix de l'immobilier est la plus grande bulle
+			  de l'histoire&nbsp;&raquo;<span class=auteur><b>(The Economist, 19 juin 2005)</b></span>";
 			}
+
 		?>
 		</div>
 		</B_artthemes>
@@ -219,7 +228,7 @@
 	else
 		$type_retitrage = 'article';
 
-	<BOUCLE_suiteune(ARTICLES){lang_select=non}{ps>=3}{doublons}{id_mot}{date<(#DATE|limite_age{-1})}{par date}{inverse}{0,170}>
+	<BOUCLE_suiteune(ARTICLES){lang_select=non}{ps>=3}{doublons}{id_mot}{date<(#DATE|limite_age{-1})}{par date}{inverse}{0,280}>
 	$id_rub = $code_rub =$rubs['#ID_RUBRIQUE']['source'];
 	$titre_rub=$rubs['#ID_RUBRIQUE']['titre'];
 	$addsource['#ID_RUBRIQUE']++;
@@ -257,7 +266,7 @@
 	$art['id_article'] = '#ID_ARTICLE';
 
 	// nourrir les blocs date et source et leurs criteres de tri
-	if (($NB[$art["secteur"]]++<=200)&&($NBTOT++<=220)) {
+	if (($NB[$art["secteur"]]++<=300)&&($NBTOT++<=300)) {
 		if ($var_source) {
 			$bloc[$id_rub][] = $art;
 			$bloc_valeur[$id_rub] = max($bloc_valeur[$id_rub],$datenum);
@@ -266,7 +275,8 @@
 			$bloc[$art["jour"]][] = $art;
 			$bloc_valeur[$art["jour"]] = $datenum;
 			$bloc_titre[$art["jour"]] = $art["jour"];
-			if (date("Y")<>[(#DATE|annee)]) $bloc_titre[$datenum].=" [(#DATE|annee)]";
+			if (date("Y")<>[(#DATE|annee)]) $bloc_titre[$art["jour"]].=" [(#DATE|annee)]";
+			$bloc_titre[$art["jour"]]=ereg_replace("200. 200","200",$bloc_titre[$art["jour"]]);
 		} 
 		$deja[$art['id_article']]=1;
 	}
@@ -402,6 +412,11 @@
 	Les articles présentés sur cette page ont été choisis et classés par
 	un automate. Notre sélection peut donc présenter certains manques ou
 	inclure des articles hors-sujet.
+
+	<?php
+	  if ($ze_mot==636) echo "<p><b>Champ sémantique</b> : [(#TEXTE|texte_script|enleve_bayesiens)]";
+	?>
+	
 	</div>
 
 	<div>&nbsp;</div>

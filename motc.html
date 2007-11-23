@@ -119,6 +119,7 @@
 		</div>
 		</B_artthemes>
 		</BOUCLE_test_artheme>
+
 </td>
 </tr>
 <tr>
@@ -329,7 +330,7 @@
 <form action='http://www.up.univ-mrs.fr/cgi-veronis/concord-tce' method='post' name='form_rech' style="margin: 0px; padding: 0px;"><input name="lang" value="fr" type="hidden">
 <input type='text' id='formulaire_recherche' name='forme' value="Rechercher" size='15' class='formrecherche' onfocus="javascript:this.value='';">
 <div style='text-align:right;'><input type='submit' name='Chercher' value='Rechercher dans la Constitution' style="background: url(/img_rezo/iconerezo.gif) left no-repeat; margin-top: 3px; padding: 2px; padding-left: 16px;">
-<div style='text-align:right; font-size: 10px;'><input name="corpus" value="cfr" type="radio">Française<input name="corpus" value="tce" checked="checked" type="radio">Européenne</div>
+<div style='text-align:right; font-size: 10px;'><input name="corpus" value="cfr" type="radio">Française<input name="corpus" value="tce" checked="checked" type="radio">Européenne (non simplifiée)</div>
 <a class='centre2' href="http://aixtal.blogspot.com">Merci à Technologies du Langage</a>
 <a class='centre2' href="http://aixtal.blogspot.com/2005/04/texte-naviguez-dans-la-constitution.html">Plus d'informations sur ce moteur</a> 
 </div>
@@ -341,7 +342,7 @@
 
                <div class="pavedepeches">
 		<div class="datesep">Dépêches</div>
-		<BOUCLE_aussi(ARTICLES){doublons}{ps>=2}{id_mot}{age<=7}{par date}{inverse}{0,30}>
+		<BOUCLE_aussi(ARTICLES){doublons}{ps>=2}{id_mot}{age<=15}{par date}{inverse}{0,30}>
 			<BOUCLE_rub_parent3(RUBRIQUES){id_rubrique}><?php [$source='(#DESCRIPTIF)';] $titre_rub='[(#TITRE|texte_script)]'; ?></BOUCLE_rub_parent3>
 	        <?php 
 			$para=retitrage('[(#TITRE|supprimer_numero|texte_script)]', 'tout', 'depeche', '[(#DATE)]', $titre_rub);

@@ -1,6 +1,6 @@
 <?php
-  $TAILLEG=20;
-  $TAILLED=18;
+  $TAILLEG=17;
+  $TAILLED=15;
   if (strpos($HTTP_HOST,"ews")) { header("Location: /actu"); exit(1); }
   if (($preference=="1024")&&(!strpos($REQUEST_URI,"800"))) { header("Location: /large"); exit(1); }
   //if (!strpos($REQUEST_URI,"ezo800")) { header("Location: /anniv"); exit(1); }
@@ -32,7 +32,7 @@
         <meta name="ROBOTS" content="INDEX,FOLLOW,NOARCHIVE">
 	<link rel="stylesheet" href="spip_style.css" type="text/css" />
 	<link rel="alternate" type="application/rss+xml" title="Le Portail des copains" href="/backend/portail">
-
+	<link rel="microsummary" type="text/plain" href="http://rezo.net/microsummary.php" />
         <style>
         div.introduction {
                 font-size: 10px;
@@ -326,7 +326,6 @@
         </BOUCLE_labas>
         </div>
 </B_labas>
-
         <div>&nbsp;</div>
         <div>&nbsp;</div>
 

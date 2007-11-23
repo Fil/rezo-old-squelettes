@@ -82,7 +82,7 @@
 	}
 
 	// lock SQL
-	if (!spip_get_lock('memo_portail')) die("lock SQL");
+	if (!spip_get_lock('memo_portail'. date('D:H'))) die("lock SQL");
 
 	// De quel URL allons-nous nous occuper ?
 	// On en prend un au hasard parmi les douze plus recents, et une fois sur 5 on accepte 
